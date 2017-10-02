@@ -91,7 +91,28 @@ class UVTable(object):
         raise NotImplementedError
 
     def apply_phase(self, dRA=0, dDec=0):
-        raise NotImplementedError
+        """
+        Apply a phase change in the uv space, corresponding to a translation by
+        angular offsets (dRA, dDec) in the plane of the sky.
+
+        Parameters
+        ----------
+        dRA : float, optional
+            Offset along the Right Ascension direction. dRA>0 translates image towards East.
+            **units**: rad
+        dDec : float, optional
+            Offset along the Declination direction. dDec>0 translates image towards North.
+            **units**: rad
+
+        """
+        dRA *= 2. * np.pi
+        dDec *= 2. * np.pi
+
+        phi = self.u * dRA + self.v * dDec
+        vis = (self.re + 1j*self.im) * (np.cos(phi) + 1j*np.sin(phi))
+
+        self.re = vis.real
+        self.im = vis.imag
 
     def uvplot(self):
         raise NotImplementedError
