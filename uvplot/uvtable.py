@@ -14,39 +14,57 @@ class UVTable(object):
     UV table.
 
     """
-    def __init__(self, filename, wle, format='uvtable'):
+    def __init__(self, uvtable=None, filename="", wle=1, **kwargs):
         """
         Init the UVTable object by importing the visibilities from file.
 
         Parameters
         ----------
         filename : str
-            Filename of the uv table.
-        wle : float
-            Observing wavelength.
-            **units**: typically meters, same as the u, v coordinates in the uv table.
+            Name of the file containing the uv table.
+        wle : float, optional
+            Observing wavelength. Default is 1, i.e. the `(u,v)` coordinates are
+            assumed to be expressed in units of wavelength.
+            **units**: same as the u, v coordinates in the uv table.
 
         Notes
         -----
         The (u, v) coordinates are stored in units of the observing wavelength `wle`.
 
         """
-        self.filename = filename
-        self.wle = wle
+        if filename != "":
+            self.filename = filename
 
-        if format == 'uvtable':
-            uvdata = np.loadtxt(filename)
-        else:
-            raise NotImplementedError
+            uvdata = self.read_uvtable(self.filename, kwargs.get('format', 'uvtable'))
 
-        self._u = uvdata[:, 0].copy()/wle
-        self._v = uvdata[:, 1].copy()/wle
-        self._re = uvdata[:, 2].copy()
-        self._im = uvdata[:, 3].copy()
-        self._w = uvdata[:, 4].copy()
+            u = uvdata[:, 0]
+            v = uvdata[:, 1]
+            re = uvdata[:, 2]
+            im = uvdata[:, 3]
+            w = uvdata[:, 4]
+
+        if uvtable is not None:
+            u, v, re, im, w = uvtable
+
+        self._u = u/wle
+        self._v = v/wle
+        self._re = re
+        self._im = im
+        self._w = w
 
         self.ndat = len(self.u)
         self._uvdist = None
+
+    @staticmethod
+    def read_uvtable(filename, format):
+        """ Read uvtable from file, given a specific format. """
+        if format == 'uvtable':
+            uvdata = np.loadtxt(filename)
+
+        else:
+            raise NotImplementedError
+
+        return uvdata
 
     @property
     def u(self):
@@ -54,7 +72,7 @@ class UVTable(object):
 
     @u.setter
     def u(self, value):
-        self._u = value
+        self._u = np.ascontiguousarray(value)
 
     @property
     def v(self):
@@ -62,7 +80,7 @@ class UVTable(object):
 
     @v.setter
     def v(self, value):
-        self._v = value
+        self._v = np.ascontiguousarray(value)
         
     @property
     def re(self):
@@ -70,7 +88,7 @@ class UVTable(object):
 
     @re.setter
     def re(self, value):
-        self._re = value
+        self._re = np.ascontiguousarray(value)
         
     @property
     def im(self):
@@ -78,15 +96,15 @@ class UVTable(object):
 
     @im.setter
     def im(self, value):
-        self._im = value
+        self._im = np.ascontiguousarray(value)
         
     @property
     def w(self):
-        return self.w
+        return self._w
 
     @w.setter
     def w(self, value):
-        self.w = value
+        self._w = np.ascontiguousarray(value)
 
     @property
     def uvdist(self):
@@ -121,6 +139,70 @@ class UVTable(object):
 
         self._re = vis.real
         self._im = vis.imag
+
+    @staticmethod
+    def rotate(x, y, theta):
+        """
+        Rotate `(x,y)` coordinates counter-clockwise by an angle `theta`.
+
+        Parameters
+        ----------
+        x : array-like, float
+            X coordinates.
+        y : array-like, float
+            Y coordinates.
+        theta : float
+            Angle of rotation.
+            **units**: rad
+
+        Returns
+        -------
+        x_r, y_r : array-like
+            X and Y coordinates rotated by an angle `theta`.
+
+        """
+        if theta == 0:
+            return x, y
+
+        cos_t = np.cos(theta)
+        sin_t = np.sin(theta)
+
+        x_r = x*cos_t - y*sin_t
+        y_r = x*sin_t + y*cos_t
+
+        return x_r, y_r
+
+    def deproject(self, inc, PA=0):
+        """
+        Deproject `(u,v)` coordinates.
+        First, a rotation of a position angle `PA` is applied, and then a deprojection by inclination `inc`.
+
+        Paramters
+        ---------
+        inc : float
+            Inclination.
+            **units**: rad
+        PA : float, optional
+            Position Angle (rad).
+            **units**: rad
+
+        Returns
+        -------
+        A copy of the UVTable object, with deprojected `(u,v)` coordinates.
+
+        """
+        cos_inc = np.cos(inc)
+
+        # Rotation by -PA
+        # Note: the right ascension is a reversed x axis, thus the anti-rotation
+        # of a reversed PA Angle is the same of a direct rotation.
+        u_deproj, v_deproj = self.rotate(self.u.copy(), self.v.copy(), PA)
+
+        # Deprojection
+        # Note u and v in the Fourier space, thus
+        # instead of dividing by cos(), we must multiply
+        u_deproj *= cos_inc
+        return UVTable((u_deproj, v_deproj, self.re, self.im, self.w))
 
     def uvplot(self):
         raise NotImplementedError
