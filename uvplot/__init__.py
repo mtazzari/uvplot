@@ -1,1 +1,1 @@
-from .uvplot import uvplot
+from .uvtable import UVTable
