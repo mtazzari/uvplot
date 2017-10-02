@@ -39,45 +39,46 @@ class UVTable(object):
         else:
             raise NotImplementedError
 
-        self.u = uvdata[:, 0].copy()/wle
-        self.v = uvdata[:, 1].copy()/wle
-        self.re = uvdata[:, 2].copy()
-        self.im = uvdata[:, 3].copy()
-        self.w = uvdata[:, 4].copy()
+        self._u = uvdata[:, 0].copy()/wle
+        self._v = uvdata[:, 1].copy()/wle
+        self._re = uvdata[:, 2].copy()
+        self._im = uvdata[:, 3].copy()
+        self._w = uvdata[:, 4].copy()
 
         self.ndat = len(self.u)
+        self._uvdist = None
 
     @property
     def u(self):
-        return self.u
+        return self._u
 
     @u.setter
     def u(self, value):
-        self.u = value
+        self._u = value
 
     @property
     def v(self):
-        return self.v
+        return self._v
 
     @v.setter
     def v(self, value):
-        self.v = value
+        self._v = value
         
     @property
-    def Re(self):
-        return self.Re
+    def re(self):
+        return self._re
 
-    @Re.setter
-    def Re(self, value):
-        self.Re = value
+    @re.setter
+    def re(self, value):
+        self._re = value
         
     @property
-    def Im(self):
-        return self.Im
+    def im(self):
+        return self._im
 
-    @Im.setter
-    def Im(self, value):
-        self.Im = value
+    @im.setter
+    def im(self, value):
+        self._im = value
         
     @property
     def w(self):
@@ -86,6 +87,13 @@ class UVTable(object):
     @w.setter
     def w(self, value):
         self.w = value
+
+    @property
+    def uvdist(self):
+        if self._uvdist is None:
+            self._uvdist = np.hypot(self._u, self._v)
+
+        return self._uvdist
 
     def uvbin(self, uvbin_size, inc=0, PA=0):
         raise NotImplementedError
@@ -109,10 +117,10 @@ class UVTable(object):
         dDec *= 2. * np.pi
 
         phi = self.u * dRA + self.v * dDec
-        vis = (self.re + 1j*self.im) * (np.cos(phi) + 1j*np.sin(phi))
+        vis = (self._re + 1j*self._im) * (np.cos(phi) + 1j*np.sin(phi))
 
-        self.re = vis.real
-        self.im = vis.imag
+        self._re = vis.real
+        self._im = vis.imag
 
     def uvplot(self):
         raise NotImplementedError
