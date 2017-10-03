@@ -327,8 +327,6 @@ class UVTable(object):
         assert len(axes) == 2
         ax_Re, ax_Im = axes
 
-        print("Initializing the observational datasets and binning the data.")
-
         if uvbin_size != 0:
             self.uvbin(uvbin_size)
 
