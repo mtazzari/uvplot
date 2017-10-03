@@ -113,8 +113,76 @@ class UVTable(object):
 
         return self._uvdist
 
-    def uvbin(self, uvbin_size, inc=0, PA=0):
-        raise NotImplementedError
+    def uvbin(self, uvbin_size, **kwargs):
+        """
+        Compute the intervals (bins) of the uv-distances given the size of the bin (bin_size_wle).
+
+        Parameters
+        ----------
+        bin_size_wle : float
+            Bin size in units of the wavelength.
+
+
+        Note
+        ----
+        To compute the weights, we do not need to divide by the weight_corr factor since it cancels out when we compute
+
+        """
+        self.nbins = np.ceil(self.uvdist.max()/uvbin_size).astype('int')
+        self.bin_uvdist = np.zeros(self.nbins)
+        self.bin_weights = np.zeros(self.nbins)
+        self.bin_count = np.zeros(self.nbins, dtype='int')
+        self.uv_intervals = []
+
+        self.uv_bin_edges = np.arange(self.nbins+1, dtype='float64')*uvbin_size
+
+        for i in range(self.nbins):
+            uv_interval = np.where((self.uvdist >= self.uv_bin_edges[i]) &
+                                   (self.uvdist < self.uv_bin_edges[i+1]))
+            self.bin_count[i] = len(uv_interval[0])
+
+            if self.bin_count[i] != 0:
+                self.bin_uvdist[i] = self.uvdist[uv_interval].sum()/self.bin_count[i]
+                self.bin_weights[i] = np.sum(self.weights[uv_interval])
+            else:
+                self.bin_uvdist[i] = self.uv_bin_edges[i]+0.5*uvbin_size
+
+            self.uv_intervals.append(uv_interval)
+
+        self.re_bin, self.re_bin_err = self.bin_quantity(self.re, **kwargs)
+        self.im_bin, self.im_bin_err = self.bin_quantity(self.im, **kwargs)
+
+    def bin_quantity(self, x, use_std=False):
+        """
+        Compute bins of the quantity x based on the intervals of the uv-distances of the current Uvtable.
+        To compute the uv-distances use Uvtable.compute_uvdist() and to compute the intervals use Uvtable.compute_uv_intervals().
+
+        Parameters
+        ----------
+        x : array-like
+            Quantity to be binned.
+        use_std : bool, optional
+            If provided, the error on each bin is computed as the standard deviation divided by sqrt(npoints_per_bin).
+
+        Returns
+        -------
+        bin_x, bin_x_err : array-like
+            Respectively the bins and the bins error of the quantity x.
+
+        """
+        bin_x, bin_x_err = np.zeros(self.nbins), np.zeros(self.nbins)
+
+        for i in range(self.nbins):
+
+            if self.bin_count[i] != 0:
+                bin_x[i] = np.sum(x[self.uv_intervals[i]]*self.weights[self.uv_intervals[i]])/self.bin_weights[i]
+
+                if use_std is True:
+                    bin_x_err[i] = np.std(x[self.uv_intervals[i]])
+                else:
+                    bin_x_err[i] = 1./np.sqrt(self.bin_weights[i])
+
+        return bin_x, bin_x_err
 
     def apply_phase(self, dRA=0, dDec=0):
         """
