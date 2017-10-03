@@ -275,24 +275,31 @@ class UVTable(object):
 
         return UVTable((u_deproj, v_deproj, self.re, self.im, self.weights))
 
-    def plot(self, fig_filename='uvplot.png', color='k', linestyle='.', label='',
+    def plot(self, fig_filename=None, color='k', linestyle='.', label='',
              fontsize=18, yerr=True, caption=None, axes=None,):
         """
         Produce a uv plot.
 
         Parameters
         ----------
-        bin_uvdist:
-        bin_re:
-        bin_im:
-        bin_re_err:
-        bin_im_err:
-        color:
-        linestyle:
-        label:
-        fontsize:
-        caption:
-        axes:
+        fig_filename : str, optional
+            File name of the output plot.
+        color : str, optional
+            Line color.
+        linestyle : str, optional
+            Line style.
+        label : str, optional
+            Legend label.
+        fontsize: int, optional
+            Font size to be used in the text of the plot.
+        yerr : bool, optional
+            If True, the y errors are shown. Default is True.
+        caption : dict, optional
+            Caption for the whole plot. Must be a dictionary with following keys:
+            'x' and 'y' (the coordinates of the caption in units of the plotted quantities),
+            'fontsize' (the fontsize to be used), 'text' (the caption text).
+        axes : matplotlib.Axes, optional
+            If provided, the plots are done in axes, otherwise a new figure is created.
 
         Returns
         -------
