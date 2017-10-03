@@ -278,7 +278,7 @@ class UVTable(object):
     def plot(self, fig_filename='uvplot.png', color='k', linestyle='.', label='',
              fontsize=18, yerr=True, caption=None, axes=None,):
         """
-        Do a uv plot.
+        Produce a uv plot.
 
         Parameters
         ----------
@@ -296,8 +296,10 @@ class UVTable(object):
 
         Returns
         -------
+        axes : matplotlib.Axes
+            The Real and Imaginary axes on which the uv plot is done.
+
         """
-        print(yerr)
         if not axes:
             fig = plt.figure(figsize=(6, 6))
             gs = GridSpec(2, 1, height_ratios=[4, 1])
@@ -326,6 +328,8 @@ class UVTable(object):
                          fontsize=fontsize)
         ax_Re.set_ylabel('Re(V) (Jy)', fontweight='bold', fontsize=fontsize)
         ax_Im.set_ylabel('Im(V) (Jy)', fontweight='bold', fontsize=fontsize)
+        ax_Re.yaxis.set_label_coords(-0.25, 0.5)
+        ax_Im.yaxis.set_label_coords(-0.25, 0.5)
 
         ax_Re.set_xticklabels("")
         # ax[0].set_xlim(uvlim)
@@ -350,8 +354,7 @@ class UVTable(object):
             ax_Re.text(caption['x'], caption['y'], caption['text'],
                        fontsize=caption['fontsize'], fontweight='bold')
 
-        ax_Re.figure.subplots_adjust(left=0.2, right=0.95, hspace=0., top=0.95)
-        # gs.update(left=0.15, right=0.95, top=0.9, bottom=0.1,hspace=0) #, vspace=0.15)
+        ax_Re.figure.subplots_adjust(left=0.25, right=0.97, hspace=0., bottom=0.15, top=0.98)
 
         if fig_filename:
             plt.savefig(fig_filename)
