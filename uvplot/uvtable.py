@@ -56,6 +56,7 @@ class UVTable(object):
 
         self.ndat = len(self.u)
         self._uvdist = None
+        self.bin_uvdist = None
 
     @staticmethod
     def read_uvtable(filename, format):
@@ -201,6 +202,9 @@ class UVTable(object):
             **units**: rad
 
         """
+        if dRA == 0 and dDec == 0:
+            return
+
         dRA *= 2. * np.pi
         dDec *= 2. * np.pi
 
@@ -242,7 +246,7 @@ class UVTable(object):
 
         return x_r, y_r
 
-    def deproject(self, inc, PA=0):
+    def deproject(self, inc, PA=0, inplace=True):
         """
         Deproject `(u,v)` coordinates.
         First, a rotation of a position angle `PA` is applied, and then a deprojection by inclination `inc`.
@@ -255,10 +259,13 @@ class UVTable(object):
         PA : float, optional
             Position Angle (rad).
             **units**: rad
+        inplace : bool, optional
+            By default, the `(u,v)` coordinates stored in the UVTable object are overwritten.
+            If False, `deproject` returns a copy of the UVTable object with deprojected `(u,v)` coordinates.
 
         Returns
         -------
-        A copy of the UVTable object, with deprojected `(u,v)` coordinates.
+        If inplace is True, a copy of the UVTable object, with deprojected `(u,v)` coordinates.
 
         """
         cos_inc = np.cos(inc)
@@ -273,10 +280,15 @@ class UVTable(object):
         # instead of dividing by cos(), we must multiply
         u_deproj *= cos_inc
 
-        return UVTable((u_deproj, v_deproj, self.re, self.im, self.weights))
+        if inplace:
+            self.u = u_deproj
+            self.v = v_deproj
+        else:
+            return UVTable((u_deproj, v_deproj, self.re, self.im, self.weights))
 
     def plot(self, fig_filename=None, color='k', linestyle='.', label='',
-             fontsize=18, yerr=True, caption=None, axes=None,):
+             fontsize=18, yerr=True, caption=None, axes=None,
+             uvbin_size=0):
         """
         Produce a uv plot.
 
@@ -315,8 +327,14 @@ class UVTable(object):
         assert len(axes) == 2
         ax_Re, ax_Im = axes
 
-        print(
-            "Initializing the observational datasets and binning the data.")
+        print("Initializing the observational datasets and binning the data.")
+
+        if uvbin_size != 0:
+            self.uvbin(uvbin_size)
+
+        if self.bin_uvdist is None:
+            raise AttributeError("Expected uv table with already binned data, or "
+                                 "an input parameter uvbin_size != 0")
 
         uvbins = self.bin_uvdist / 1.e3
         ax_Re.errorbar(uvbins, self.bin_re,

@@ -52,6 +52,10 @@ def test_deproject():
     uv = UVTable(filename=uvtable_filename, wle=wle)
 
     inc = np.radians(30)
-    uv_30 = uv.deproject(inc)
+    uv_30 = uv.deproject(inc, inplace=False)
 
     assert_allclose(uv_30.u, uv.u*np.cos(inc))
+
+    uv.deproject(inc)  # inplace=True by default
+    assert_allclose(uv_30.u, uv.u)
+
