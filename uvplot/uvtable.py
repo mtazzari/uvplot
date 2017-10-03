@@ -41,16 +41,16 @@ class UVTable(object):
             v = uvdata[:, 1]
             re = uvdata[:, 2]
             im = uvdata[:, 3]
-            w = uvdata[:, 4]
+            weights = uvdata[:, 4]
 
         if uvtable is not None:
-            u, v, re, im, w = uvtable
+            u, v, re, im, weights = uvtable
 
         self._u = u/wle
         self._v = v/wle
         self._re = re
         self._im = im
-        self._w = w
+        self._weights = weights
 
         self.ndat = len(self.u)
         self._uvdist = None
@@ -99,12 +99,12 @@ class UVTable(object):
         self._im = np.ascontiguousarray(value)
         
     @property
-    def w(self):
-        return self._w
+    def weights(self):
+        return self._weights
 
-    @w.setter
-    def w(self, value):
-        self._w = np.ascontiguousarray(value)
+    @weights.setter
+    def weights(self, value):
+        self._weights = np.ascontiguousarray(value)
 
     @property
     def uvdist(self):
@@ -202,7 +202,8 @@ class UVTable(object):
         # Note u and v in the Fourier space, thus
         # instead of dividing by cos(), we must multiply
         u_deproj *= cos_inc
-        return UVTable((u_deproj, v_deproj, self.re, self.im, self.w))
+        return UVTable((u_deproj, v_deproj, self.re, self.im, self.weights))
+
 
     def uvplot(self):
         raise NotImplementedError
