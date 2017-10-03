@@ -6,6 +6,8 @@ from __future__ import (division, print_function, absolute_import,
 
 import numpy as np
 
+from .uvplot import uvplot
+
 __all__ = ["UVTable"]
 
 
@@ -272,7 +274,7 @@ class UVTable(object):
         u_deproj *= cos_inc
         return UVTable((u_deproj, v_deproj, self.re, self.im, self.weights))
 
+    def plot(self):
 
-    def uvplot(self):
-        raise NotImplementedError
+        uvplot(self.bin_uvdist, self.re_bin, self.im_bin, self.re_bin_err, self.im_bin_err)
 
