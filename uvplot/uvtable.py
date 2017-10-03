@@ -5,8 +5,8 @@ from __future__ import (division, print_function, absolute_import,
                         unicode_literals)
 
 import numpy as np
-
-from .uvplot import uvplot
+import matplotlib.pyplot as plt
+from matplotlib.gridspec import GridSpec
 
 __all__ = ["UVTable"]
 
@@ -151,8 +151,8 @@ class UVTable(object):
 
             self.uv_intervals.append(uv_interval)
 
-        self.re_bin, self.re_bin_err = self.bin_quantity(self.re, **kwargs)
-        self.im_bin, self.im_bin_err = self.bin_quantity(self.im, **kwargs)
+        self.bin_re, self.bin_re_err = self.bin_quantity(self.re, **kwargs)
+        self.bin_im, self.bin_im_err = self.bin_quantity(self.im, **kwargs)
 
     def bin_quantity(self, x, use_std=False):
         """
@@ -272,9 +272,88 @@ class UVTable(object):
         # Note u and v in the Fourier space, thus
         # instead of dividing by cos(), we must multiply
         u_deproj *= cos_inc
+
         return UVTable((u_deproj, v_deproj, self.re, self.im, self.weights))
 
-    def plot(self):
+    def plot(self, fig_filename='uvplot.png', color='k', linestyle='.', label='',
+             fontsize=18, yerr=True, caption=None, axes=None,):
+        """
+        Do a uv plot.
 
-        uvplot(self.bin_uvdist, self.re_bin, self.im_bin, self.re_bin_err, self.im_bin_err)
+        Parameters
+        ----------
+        bin_uvdist:
+        bin_re:
+        bin_im:
+        bin_re_err:
+        bin_im_err:
+        color:
+        linestyle:
+        label:
+        fontsize:
+        caption:
+        axes:
 
+        Returns
+        -------
+        """
+        print(yerr)
+        if not axes:
+            fig = plt.figure(figsize=(6, 6))
+            gs = GridSpec(2, 1, height_ratios=[4, 1])
+            axes = plt.subplot(gs[0]), plt.subplot(gs[1])
+
+        assert len(axes) == 2
+        ax_Re, ax_Im = axes
+
+        print(
+            "Initializing the observational datasets and binning the data.")
+
+        uvbins = self.bin_uvdist / 1.e3
+        ax_Re.errorbar(uvbins, self.bin_re,
+                       yerr=self.bin_re_err if yerr is True else None,
+                       fmt=linestyle,
+                       color=color, linewidth=2.5, capsize=2.5,
+                       markersize=13, elinewidth=0., label=label)
+
+        ax_Im.errorbar(uvbins, self.bin_im,
+                       yerr=self.bin_im_err if yerr is True else None,
+                       fmt=linestyle,
+                       color=color, linewidth=2.5, capsize=2.5,
+                       markersize=13, elinewidth=0., label=label)
+
+        ax_Im.set_xlabel(r'uv-distance (k$\lambda$)', fontweight='bold',
+                         fontsize=fontsize)
+        ax_Re.set_ylabel('Re(V) (Jy)', fontweight='bold', fontsize=fontsize)
+        ax_Im.set_ylabel('Im(V) (Jy)', fontweight='bold', fontsize=fontsize)
+
+        ax_Re.set_xticklabels("")
+        # ax[0].set_xlim(uvlim)
+        # ax[1].set_xlim(uvlim)
+        # ax[0].set_ylim(Jylims[0])
+        # ax[1].set_ylim(Jylims[1])
+        # ax[1].set_yticks(Jyticks_im)
+        # ax[1].set_yticklabels(Jyticks_im)
+
+        if label:
+            ax_Re.legend(fontsize=fontsize, frameon=False)
+
+        if caption:
+            caption_keys = ['x', 'y', 'text', 'fontsize']
+            if all(k in caption for k in caption_keys):
+                pass
+            else:
+                raise KeyError(
+                    "Expected caption dict with following keys: {}, but got {}".format(
+                        caption_keys, caption.keys()))
+
+            ax_Re.text(caption['x'], caption['y'], caption['text'],
+                       fontsize=caption['fontsize'], fontweight='bold')
+
+        ax_Re.figure.subplots_adjust(left=0.2, right=0.95, hspace=0., top=0.95)
+        # gs.update(left=0.15, right=0.95, top=0.9, bottom=0.1,hspace=0) #, vspace=0.15)
+
+        if fig_filename:
+            plt.savefig(fig_filename)
+        else:
+            return axes
