@@ -16,9 +16,22 @@ A simple package to make nice plots of deprojected interferometric visibilities,
 
 |
 
-The current version works on `Python` >2.7 and >3.6 and implements the basic plotting functionality. More features are to come in the future.
+The current version implements the basic plotting functionality. More features are to come in the future.
 
-If you are interested, or have feature requests, or encounter issues, consider creating an Issue or writing me an `email  <mtazzari@ast.cam.ac.uk>`_.
+If you are interested, or have feature requests, or encounter issues, consider creating an Issue or writing me an `email  <mtazzari@ast.cam.ac.uk>`_. I am happy to have your feedback!
+
+
+Installation
+------------
+
+**uvplot** works on `Python` >2.7 and >3.6 and can be installed with:
+
+.. code-block :: bash
+
+    pip install git+https://github.com/mtazzari/uvplot.git
+
+Example
+-------
 
 This is an example plot:
 
