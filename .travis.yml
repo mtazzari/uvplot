@@ -10,11 +10,6 @@ python:
   - 2.7
   - 3.6
 
-#addons:
-#  apt:
-#    packages:
-#      - libfftw3-dev
-
 before_install:
   - wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -b -p $HOME/miniconda
@@ -23,13 +18,11 @@ before_install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
-#  - conda config --add channels conda-forge
 
 install:
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION matplotlib numpy pytest
   - source activate test-environment
   - pip install -e .
-  #git+https://github.com/mtazzari/uvplot.git
 
 script:
   # if any line in this section fails, build fails
