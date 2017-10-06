@@ -11,7 +11,7 @@ If you are interested, or have feature requests, or encounter issues, consider c
 This is an example plot:
 
 .. image:: static/uvplot.png
-   :scale: 30 %
+   :width: 60 %
    :alt: example uv plot
    :align: center
 
