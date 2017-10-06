@@ -8,11 +8,16 @@ The current version should work on both Python >2.7 and >3.6 and implements the 
 
 If you are interested, or have feature requests, or encounter issues, consider creating an Issue or writing me an `email  <mtazzari@ast.cam.ac.uk>`_.
 
+This is an example plot:
 .. image:: static/uvplot.png
-   :scale: 80 %
+   :scale: 50 %
    :alt: example uv plot
    :align: center
 
+created with:
+
+.. literalinclude:: uvplot/example.py
+                    :language: py
 
 License
 -------
