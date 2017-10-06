@@ -7,12 +7,16 @@ A simple package to make nice plots of deprojected interferometric visibilities,
 .. image:: https://travis-ci.org/mtazzari/uvplot.svg?branch=master
     :target: https://travis-ci.org/mtazzari/uvplot
 
+.. image:: https://img.shields.io/github/release/mtazzari/uvplot/all.svg
+    :target: https://github.com/mtazzari/uvplot/releases
+    
 .. image:: https://img.shields.io/badge/License-LGPL%20v3-blue.svg
     :target: https://www.gnu.org/licenses/lgpl-3.0
 
+
 |
 
-The current version should work on both Python >2.7 and >3.6 and implements the basic plotting functionality. More features are to come in the future.
+The current version works on `Python` >2.7 and >3.6 and implements the basic plotting functionality. More features are to come in the future.
 
 If you are interested, or have feature requests, or encounter issues, consider creating an Issue or writing me an `email  <mtazzari@ast.cam.ac.uk>`_.
 
