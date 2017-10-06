@@ -12,7 +12,6 @@ setup(
     description="Utilities for plotting interferometric visibilities.",
     long_description=open('README.rst').read(),
     install_requires=["numpy>1.11", "matplotlib"],
-    package_data={u'': [u'LICENSE']},
     license="LGPLv3",
     url="tbd",
     classifiers=[
