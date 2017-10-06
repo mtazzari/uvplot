@@ -13,7 +13,9 @@ A simple package to make nice plots of deprojected interferometric visibilities,
 .. image:: https://img.shields.io/badge/License-LGPL%20v3-blue.svg
     :target: https://www.gnu.org/licenses/lgpl-3.0
 
-
+.. image:: https://zenodo.org/badge/105298533.svg
+   :target: https://zenodo.org/badge/latestdoi/105298533
+   
 |
 
 The current version implements the basic plotting functionality. More features are to come in the future.
@@ -70,8 +72,20 @@ created with:
     axes[0].figure.savefig("uvplot.png")
 
 
-License
--------
+License and Attribution
+-----------------------
 **uvplot** is free software licensed under the LGPLv3 License. For more details see the LICENSE.
+
+If you use **uvplot** for your publication, please cite the Zenodo reference::
+
+    @misc{uvplot_mtazzari,
+      author       = {Marco Tazzari},
+      title        = {mtazzari/uvplot: v0.1.1},
+      month        = oct,
+      year         = 2017,
+      doi          = {10.5281/zenodo.1003113},
+      url          = {https://doi.org/10.5281/zenodo.1003113}
+    }
+
 
 © Copyright 2017 Marco Tazzari.
