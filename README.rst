@@ -1,8 +1,16 @@
 ======
 uvplot
 ======
-
 A simple package to make nice plots of deprojected interferometric visibilities, often called **uvplot** s.
+
+
+.. image:: https://travis-ci.org/mtazzari/uvplot.svg?branch=master
+    :target: https://travis-ci.org/mtazzari/uvplot
+
+.. image:: https://img.shields.io/badge/License-LGPL%20v3-blue.svg
+    :target: https://www.gnu.org/licenses/lgpl-3.0
+
+|
 
 The current version should work on both Python >2.7 and >3.6 and implements the basic plotting functionality. More features are to come in the future.
 
