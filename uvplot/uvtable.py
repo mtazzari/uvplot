@@ -390,7 +390,7 @@ class UVTable(object):
 def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
                    dualpol=True, fmt='%10.6e', keepms=False, verbose=False):
     """
-    Export visibilities from an MS Table to a uvtable.
+    Export visibilities from an MS Table to a uvtable. Requires execution inside CASA.
     Currently the only uvtable format supported is ASCII.
 
     Typicall call signature::
@@ -426,6 +426,20 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
     To export all the spws in an MS table provide split_args, e.g.::
 
         split_args = {'vis': 'input.ms', 'outputvis':'input_tmp.ms', spw:'*'}
+
+    Example
+    -------
+    To extract all the visibilities from an MS table::
+
+        casa --nologger --nogui -c
+            "from uvplot import export_uvtable; export_uvtable('uvtable.txt', tb, vis='sample.ms')"
+
+    To extract the visibilities in spectral windows 0 and 2 pass the `split_args`
+    parameter and the CASA `split` task
+
+        casa --nologger --nogui -c
+        "from uvplot import export_uvtable; export_uvtable('uvtable.txt', tb, split=split,
+         split_args={'vis': 'sample.ms' , 'datacolumn': 'data', 'spw':'0,2'})"
 
     """
     if vis != "":
