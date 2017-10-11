@@ -12,9 +12,11 @@ A simple package to make nice plots of deprojected interferometric visibilities,
 
 |
 
-The current version should work on both Python >2.7 and >3.6 and implements the basic plotting functionality. More features are to come in the future.
+The current version works on both Python >2.7 and >3.6 and implements the basic plotting functionality. More features are to come in the future.
 
 If you are interested, or have feature requests, or encounter issues, consider creating an Issue or writing me an `email  <mtazzari@ast.cam.ac.uk>`_.
+
+What's new in **v0.2.0**: a new `export_uvtable` function to export visibilities from an MS to an ASCII table.
 
 This is an example plot:
 
