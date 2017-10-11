@@ -11,7 +11,7 @@ setup(
     author_email="mtazzari@ast.cam.ac.uk",
     description="Utilities for plotting interferometric visibilities.",
     long_description=open('README.rst').read(),
-    install_requires=["numpy>1.11", "matplotlib"],
+    install_requires=["numpy>=1.9", "matplotlib"],
     license="LGPLv3",
     url="tbd",
     classifiers=[
