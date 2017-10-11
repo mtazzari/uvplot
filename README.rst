@@ -39,8 +39,9 @@ To make **uvplot** available in CASA, run from the shell:
 
     casa-pip install git+https://github.com/mtazzari/uvplot.git
 
-where `casa-pip` is a tool that can be downloaded `here <https://github.com/radio-astro-tools/casa-python>`_
+where `casa-pip` is a tool that can be downloaded `here <https://github.com/radio-astro-tools/casa-python>`_ .
 
+**uvplot** has been tested on CASA versions > 4.7.0.
 
 Example
 -------
