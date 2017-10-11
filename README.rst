@@ -33,7 +33,7 @@ Installation
 
     pip install git+https://github.com/mtazzari/uvplot.git
 
-and, inside CASA, with:
+To make **uvplot** available in CASA, run from the shell:
 
 .. code-block :: bash
 
