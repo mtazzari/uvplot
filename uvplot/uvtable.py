@@ -429,17 +429,21 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
 
     Example
     -------
-    To extract all the visibilities from an MS table::
+    From within CASA, to extract all the visibilities from an MS table::
 
-        casa --nologger --nogui -c
-            "from uvplot import export_uvtable; export_uvtable('uvtable.txt', tb, vis='sample.ms')"
+        export_uvtable('uvtable.txt', tb, vis='sample.ms')
 
-    To extract the visibilities in spectral windows 0 and 2 pass the `split_args`
-    parameter and the CASA `split` task
+    From within CASA, to extract the visibilities in spectral windows 0 and 2 use
+    the `split_args` parameter and the CASA `split` task::
 
-        casa --nologger --nogui -c
-        "from uvplot import export_uvtable; export_uvtable('uvtable.txt', tb, split=split,
-         split_args={'vis': 'sample.ms' , 'datacolumn': 'data', 'spw':'0,2'})"
+        export_uvtable('uvtable.txt', tb, split=split,
+         split_args={'vis': 'sample.ms' , 'datacolumn': 'data', 'spw':'0,2'})
+
+    To perform these operations without running CASA interactively::
+
+        casa --nologger --nogui -c "from uvplot import export_uvtable; export_uvtable(...)"
+
+    ensuring that the strings are inside the '..' characters and not the "..." one.
 
     """
     if vis != "":
