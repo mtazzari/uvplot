@@ -37,7 +37,7 @@ class UVTable(object):
         if filename != "":
             self.filename = filename
 
-            uvdata = self.read_uvtable(self.filename, kwargs.get('format', 'uvtable'))
+            uvdata = self.read_uvtable(self.filename, kwargs.get('format', 'ascii'))
 
             u = uvdata[:, 0]
             v = uvdata[:, 1]
@@ -61,7 +61,7 @@ class UVTable(object):
     @staticmethod
     def read_uvtable(filename, format):
         """ Read uvtable from file, given a specific format. """
-        if format == 'uvtable':
+        if format == 'ascii':
             uvdata = np.loadtxt(filename)
 
         else:
