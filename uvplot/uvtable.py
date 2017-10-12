@@ -402,7 +402,10 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
     ----------
     uvtable_filename : str
         Filename of the output uvtable, e.g. "uvtable.txt"
-    tb : CASA tb object
+    tb : CASA `tb` object
+        As tb parameter you **must** pass the tb object that is defined in the CASA shell.
+        Since tb cannot be accessed outside CASA, export_uvtable('uvtable.txt', tb, ...) 
+        can be executed only inside CASA.
     vis : str, optional
         MS Table filename, e.g. mstable.ms
     split_args : dict, optional
@@ -433,6 +436,9 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
 
         export_uvtable('uvtable.txt', tb, vis='sample.ms')
 
+    where `tb` is the CASA tb object (to inspect it type `tb` in the CASA shell).
+    For more information on `tb` see `<https://casa.nrao.edu/docs/CasaRef/table-Module.html>`_
+    
     From within CASA, to extract the visibilities in spectral windows 0 and 2 use
     the `split_args` parameter and the CASA `split` task::
 
