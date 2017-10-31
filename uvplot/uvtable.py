@@ -113,8 +113,7 @@ class UVTable(object):
 
     @property
     def uvdist(self):
-        if self._uvdist is None:
-            self._uvdist = np.hypot(self._u, self._v)
+        self._uvdist = np.hypot(self._u, self._v)
 
         return self._uvdist
 
