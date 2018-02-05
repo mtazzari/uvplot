@@ -15,5 +15,6 @@ import matplotlib
 if matplotlib.get_backend().lower() == 'macosx':
     matplotlib.use('TkAgg')
 
-from .uvtable import UVTable, export_uvtable
+from .uvtable import UVTable
+from .io import export_uvtable
 from .constants import arcsec
