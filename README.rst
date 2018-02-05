@@ -1,7 +1,8 @@
 ======
 uvplot
 ======
-A simple package to make nice plots of deprojected interferometric visibilities, often called **uvplot** s.
+A simple package to make nice plots of deprojected interferometric visibilities, often called **uvplots**.
+It can be installed inside the `NRAO CASA package <https://casa.nrao.edu/>`_ (see instructions below) and has functionalities to export visibilities from the MS Table format to ASCII.
 
 
 .. image:: https://travis-ci.org/mtazzari/uvplot.svg?branch=master
@@ -18,14 +19,40 @@ A simple package to make nice plots of deprojected interferometric visibilities,
    
 |
 
-The current version implements the basic plotting functionality. More features are to come in the future.
+The current version implements the basic plotting functionality.
 
-If you are interested, or have feature requests, or encounter issues, consider creating an Issue or writing me an `email  <mtazzari@ast.cam.ac.uk>`_. I am happy to have your feedback!
+Features on the road map:
+    - better handling of multiple spectral windows during visibilities export;
+    - new functionality to import visibilities from ASCII to MS Table.
 
-What's new:
+If you are interested, have feature requests, or encounter issues, consider creating an `Issue <https://github.com/mtazzari/uvplot/issues>`_ or writing me an `email  <marco.tazzari@gmail.com>`_. I am happy to have your feedback!
 
+
+Attribution
+-----------
+If you use **uvplot** for your publication, please cite the `Zenodo reference <https://zenodo.org/badge/latestdoi/105298533>`_ ::
+
+    @misc{uvplot_mtazzari,
+      author       = {Marco Tazzari},
+      title        = {mtazzari/uvplot: v0.1.1},
+      month        = oct,
+      year         = 2017,
+      doi          = {10.5281/zenodo.1003113},
+      url          = {https://doi.org/10.5281/zenodo.1003113}
+    }
+
+
+License
+-------
+**uvplot** is free software licensed under the LGPLv3 License. For more details see the LICENSE.
+© Copyright 2018 Marco Tazzari.
+
+
+Changelog
+---------
 - **v0.2.2**: a new export visibilities option in UVTable.plot(), automatically mask empty uv-bins, bugfixes.
 - **v0.2.0**: a new `export_uvtable` function to export visibilities from an MS to an ASCII table.
+
 
 Installation
 ------------
@@ -84,21 +111,3 @@ created with:
 
     axes[0].figure.savefig("uvplot.png")
 
-
-License and Attribution
------------------------
-**uvplot** is free software licensed under the LGPLv3 License. For more details see the LICENSE.
-
-If you use **uvplot** for your publication, please cite the Zenodo reference::
-
-    @misc{uvplot_mtazzari,
-      author       = {Marco Tazzari},
-      title        = {mtazzari/uvplot: v0.1.1},
-      month        = oct,
-      year         = 2017,
-      doi          = {10.5281/zenodo.1003113},
-      url          = {https://doi.org/10.5281/zenodo.1003113}
-    }
-
-
-© Copyright 2017 Marco Tazzari.
