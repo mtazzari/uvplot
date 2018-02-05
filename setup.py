@@ -2,20 +2,21 @@
 # coding=utf-8
 from setuptools import setup
 
+# read version number
+exec(open("uvplot/_version.py").read())
 
 setup(
     name="uvplot",
-    version="0.2.2",
+    version=__version__,
     packages=['uvplot'],
     author="Marco Tazzari",
     author_email="mtazzari@gmail.com",
-
     description="Utilities for handling and plotting interferometric visibilities.",
     long_description=open('README.rst').read(),
     install_requires=["numpy>=1.9", "matplotlib"],
     license="LGPLv3",
     url="https://github.com/mtazzari/uvplot",
-    download_url='https://github.com/mtazzari/uvplot/archive/0.2.2.tar.gz',
+    download_url='https://github.com/mtazzari/uvplot/archive/{}.tar.gz'.format(__version__),
     keywords = ['science', 'astronomy', 'interferometry'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',

@@ -32,7 +32,10 @@ script:
   - py.test uvplot/tests.py
 
   # build and deploy docs only for one python version
-  # - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pip install doctr && pip install sphinx_py3doc_enhanced_theme && make docs && cd .. && doctr deploy . --built-docs build/docs/html/; fi
+
+after_success:
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then mkdir docs/html && mkdir docs/_static && cd docs && sphinx-build -b html ./ html/ && cd .. ; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pip install doctr && pip install sphinx_py3doc_enhanced_theme && doctr deploy . --built-docs docs/html/; fi
 
 notifications:
   - email: false
