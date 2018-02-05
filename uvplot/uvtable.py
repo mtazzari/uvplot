@@ -289,7 +289,7 @@ class UVTable(object):
 
     def plot(self, fig_filename=None, color='k', linestyle='.', label='',
              fontsize=18, yerr=True, caption=None, axes=None,
-             uvbin_size=0):
+             uvbin_size=0, vis_filename=None, verbose=True):
         """
         Produce a uv plot.
 
@@ -303,7 +303,7 @@ class UVTable(object):
             Line style.
         label : str, optional
             Legend label.
-        fontsize: int, optional
+        fontsize : int, optional
             Font size to be used in the text of the plot.
         yerr : bool, optional
             If True, the y errors are shown. Default is True.
@@ -313,6 +313,13 @@ class UVTable(object):
             'fontsize' (the fontsize to be used), 'text' (the caption text).
         axes : matplotlib.Axes, optional
             If provided, the plots are done in axes, otherwise a new figure is created.
+        uvbin_size : float, optional
+            Size of the uv-distance bin.
+            **units**: observing wavelength.
+        vis_filename : str, optional
+            File name where to store the binned visibiltiies, e.g. "vis_binned.txt".
+        verbose : bool, optional
+            If True, print informative messages.
 
         Returns
         -------
@@ -336,14 +343,20 @@ class UVTable(object):
                                  "an input parameter uvbin_size != 0")
 
         uvbins = self.bin_uvdist / 1.e3
-        ax_Re.errorbar(uvbins, self.bin_re,
-                       yerr=self.bin_re_err if yerr is True else None,
+
+        mask = self.bin_count != 0
+
+        if verbose:
+            print("Masking {} uv bins".format(len(uvbins[~mask])))
+
+        ax_Re.errorbar(uvbins[mask], self.bin_re[mask],
+                       yerr=self.bin_re_err[mask] if yerr is True else None,
                        fmt=linestyle,
                        color=color, linewidth=2.5, capsize=2.5,
                        markersize=13, elinewidth=0., label=label)
 
-        ax_Im.errorbar(uvbins, self.bin_im,
-                       yerr=self.bin_im_err if yerr is True else None,
+        ax_Im.errorbar(uvbins[mask], self.bin_im[mask],
+                       yerr=self.bin_im_err[mask] if yerr is True else None,
                        fmt=linestyle,
                        color=color, linewidth=2.5, capsize=2.5,
                        markersize=13, elinewidth=0., label=label)
@@ -356,6 +369,17 @@ class UVTable(object):
         ax_Im.yaxis.set_label_coords(-0.25, 0.5)
 
         ax_Re.set_xticklabels("")
+
+        if vis_filename:
+            np.savetxt(vis_filename,
+                       np.stack([uvbins[mask],
+                                 self.bin_re[mask], self.bin_re_err[mask],
+                                 self.bin_im[mask], self.bin_im_err[mask]], axis=-1),
+                       header="uv-distance\tRe(V)\te_Re(V)\tIm(V)\te_Im(V)\n"
+                              "(klambda)\t(Jy)\t(Jy)\t(Jy)\t(Jy)")
+            if verbose:
+                print("Visibilities written to file {}".format(vis_filename))
+
         # ax[0].set_xlim(uvlim)
         # ax[1].set_xlim(uvlim)
         # ax[0].set_ylim(Jylims[0])
@@ -387,7 +411,7 @@ class UVTable(object):
 
 
 def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
-                   dualpol=True, fmt='%10.6e', keepms=False, verbose=False):
+                   dualpol=True, fmt='%10.6e', datacolumn="CORRECTED_DATA", keep_tmp_ms=False, verbose=False):
     """
     Export visibilities from an MS Table to a uvtable. Requires execution inside CASA.
     Currently the only uvtable format supported is ASCII.
@@ -395,7 +419,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
     Typicall call signature::
 
     export_uvtable('uvtable_new.txt', tb, split=split,
-                   split_args={'vis': 'sample.ms', datacolumn': 'data', spw='0,1}, verbose=True)"
+                   split_args={'vis': 'sample.ms', 'datacolumn': 'data', spw='0,1'}, verbose=True)"
 
     Parameters
     ----------
@@ -417,8 +441,10 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
         If the MS Table contains dual polarisation data. Default is True.
     fmt : str, optional
         Format of the output ASCII uvtable.
-    keepms : bool, optional
-        If True, keeps the outputvis created by the split command.
+    datacolumn: str, optional
+        Data column to be extracted, e.g. "DATA", "CORRECTED_DATA", "MODEL_DATA".
+    keep_tmp_ms : bool, optional
+        If True, keeps the temporary outputvis created by the split command.
     verbose: bool, optional
         If True, print informative messages.
 
@@ -427,7 +453,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
     By default, only the 1st spectral window (spw) is exported.
     To export all the spws in an MS table provide split_args, e.g.::
 
-        split_args = {'vis': 'input.ms', 'outputvis':'input_tmp.ms', spw:'*'}
+        split_args = {'vis': 'input.ms', 'outputvis': 'input_tmp.ms', spw: '*'}
 
     Example
     -------
@@ -476,7 +502,8 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
         if vis == "":
             raise RuntimeError("Missing vis parameter: provide a valid MS table filename.")
 
-    if verbose: print("Reading {}".format(MStb_name))
+    if verbose:
+        print("Reading {}".format(MStb_name))
 
     tb.open(MStb_name)
 
@@ -489,12 +516,11 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
 
     # get visibilities
     tb_columns = tb.colnames()
-    if "CORRECTED_DATA" in tb_columns:
-        if verbose: print("Reading CORRECTED_DATA column")
-        data = tb.getcol("CORRECTED_DATA".encode())
+
+    if datacolumn.upper() in tb_columns:
+        data = tb.getcol(datacolumn.encode())
     else:
-        if verbose: print("CORRECTED_DATA column not found. Reading DATA column")
-        data = tb.getcol("DATA".encode())
+        raise KeyError("datacolumn {} is not available.".format(datacolumn))
 
     spw = tb.getcol("DATA_DESC_ID".encode())
     nspw = len(np.unique(spw))
@@ -537,13 +563,13 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
     if verbose: print(
         "Exporting visibilities to {}".format(uvtable_filename))
     np.savetxt(uvtable_filename,
-               np.column_stack([u, v, V.real, V.imag, weights]), fmt=fmt.encode(),
+               np.column_stack([u, v, w, V.real, V.imag, weights]), fmt=fmt.encode(),
                delimiter='\t',
-               header='Extracted from {}.\nwavelength[m] = {}\nColumns:\tu[m]\tv[m]\tRe(V)[Jy]\tIm(V)[Jy]\tweight'.format(
+               header='Extracted from {}.\nwavelength[m] = {}\nColumns:\tu[m]\tv[m]\tw[m]\tRe(V)[Jy]\tIm(V)[Jy]\tweight'.format(
                    MStb_name, wle))
 
     if split_args:
-        if not keepms:
+        if not keep_tmp_ms:
             from subprocess import call
             if verbose:
                 print("Removing temporary MS table {}".format(split_args['outputvis']))
