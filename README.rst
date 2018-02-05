@@ -57,21 +57,21 @@ Changelog
 Installation
 ------------
 
-**uvplot** works on `Python` >2.7 and >3.6 and can be installed with:
+**uvplot** works on `Python` >=2.7 and >=3.6 and can be installed with:
 
 .. code-block :: bash
 
-    pip install git+https://github.com/mtazzari/uvplot.git
+    pip install uvplot
 
 To make **uvplot** available in CASA, run from the shell:
 
 .. code-block :: bash
 
-    casa-pip install git+https://github.com/mtazzari/uvplot.git
+    casa-pip install uvplot
 
 where `casa-pip` is a tool that can be downloaded `here <https://github.com/radio-astro-tools/casa-python>`_ .
 
-**uvplot** has been tested on CASA versions > 4.7.0.
+**uvplot** has been tested on CASA versions >= 4.7.0.
 
 Example
 -------
