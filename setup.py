@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="uvplot",
-    version="0.2.1",
+    version="0.2.2",
     packages=find_packages(),
     author="Marco Tazzari",
     author_email="mtazzari@ast.cam.ac.uk",

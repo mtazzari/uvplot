@@ -22,7 +22,10 @@ The current version implements the basic plotting functionality. More features a
 
 If you are interested, or have feature requests, or encounter issues, consider creating an Issue or writing me an `email  <mtazzari@ast.cam.ac.uk>`_. I am happy to have your feedback!
 
-What's new in **v0.2.0**: a new `export_uvtable` function to export visibilities from an MS to an ASCII table.
+What's new:
+
+- **v0.2.2**: a new export visibilities option in UVTable.plot(), automatically mask empty uv-bins, bugfixes.
+- **v0.2.0**: a new `export_uvtable` function to export visibilities from an MS to an ASCII table.
 
 Installation
 ------------
