@@ -37,9 +37,6 @@ script:
   - py.test uvplot/tests.py
 
   # build and deploy docs only for one python version
-  - pip install doctr
-  - doctr deploy --built-docs <path/to/built/html/> <target-directory>
-
   - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then mkdir docs/html && mkdir docs/_static && cd docs && pip install sphinx_py3doc_enhanced_theme && $CONDA_PREFIX/bin/sphinx-build -b html ./ html/ && cd .. ; fi
   - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pip install doctr && doctr deploy . --built-docs docs/html/; fi
 
