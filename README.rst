@@ -47,6 +47,9 @@ License
 **uvplot** is free software licensed under the LGPLv3 License. For more details see the LICENSE.
 © Copyright 2018 Marco Tazzari.
 
+Documentation
+-------------
+Check out the `documentation <https://mtazzari.github.io/uvplot/>`_.
 
 Changelog
 ---------
