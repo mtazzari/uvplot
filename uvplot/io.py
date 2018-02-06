@@ -168,9 +168,9 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
     # export to file as ascii
     if verbose: print("Exporting visibilities to {}".format(uvtable_filename))
     np.savetxt(uvtable_filename,
-               np.column_stack([u, v, w, V.real, V.imag, weights]),
+               np.column_stack([u, v, V.real, V.imag, weights]),
                fmt=fmt.encode(), delimiter='\t',
-               header='Extracted from {}.\nwavelength[m] = {}\nColumns:\tu[m]\tv[m]\tw[m]\tRe(V)[Jy]\tIm(V)[Jy]\tweight'.format(
+               header='Extracted from {}.\nwavelength[m] = {}\nColumns:\tu[m]\tv[m]\tRe(V)[Jy]\tIm(V)[Jy]\tweight'.format(
                    MStb_name, wle))
 
     if split_args:
