@@ -6,6 +6,11 @@ sudo: false
 
 dist: trusty
 
+env:
+  global:
+    # Doctr deploy key for mtazzari/uvplot
+    - secure: "bxyZsA1gciLkA9vzrCWbdDicC3x6x1hwwqg559l/gv9T0OX/7TvImnMtSA6/7X+HinYr7ZNFRwukE5MMMocF0V4SVoP8MKxan4sejNTR+6Pp7UvHuTnkDuXUZQxRg9P0p0EoT1DtfFBCJao5SLzVjSZ40YWqN4q3b92MLRN5tXFvmCY1Ek2D6mGgSqxNH2Zaukz1kn11dhYDY7QcjKQ7tnWvCtOhO2SXJ0HUJWTS46SpoHj9oy3oKuyl3QIOcsMxrEGlGO8R5/0RfM4zXb25ktb9uDDPlhAu6sBdLXBnotMPuBU00u1V7WQ2TEsCbxgvG5Hj3lHxFcmzzPHO7jSpgsFimaU4e+mvpExWrF2Fp9AIEkJ8hmtY7XvtK2z2g+l+Ney16R9sAHp0j33kmls5LvcvI9h9OLj6KhYvwmBfGscS0EFcrMMbF3sFil81XzcQFJRqK7LebnlfYEGWjW+ZWxYfxKooT8/4i5on3tWjRrqrYF85jueQQBM4V9kEJMYQrvmDN+6x3/+a+5flj62Yiy3MYseOZme320WO/3uPivHiVtwGuaTwlv3pl4nPblZxc1t/jkTyuRVHmR5dEWDpBtkSHyceQHlM2abpStAIAsH5oY/Wf7AR1qUnxG1hGhrX6030wH7VPdtBrx6JclKw/pNR8ZuNM3zSpGd69Cxc7Jo="
+
 python:
   - 2.7
   - 3.6
@@ -20,7 +25,7 @@ before_install:
   - conda info -a
 
 install:
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION matplotlib numpy pytest
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION matplotlib numpy pytest sphinx
   - source activate test-environment
   - pip install -e .
 
@@ -32,7 +37,8 @@ script:
   - py.test uvplot/tests.py
 
   # build and deploy docs only for one python version
-  # - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pip install doctr && pip install sphinx_py3doc_enhanced_theme && make docs && cd .. && doctr deploy . --built-docs build/docs/html/; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then mkdir docs/html && mkdir docs/_static && cd docs && pip install sphinx_py3doc_enhanced_theme && $CONDA_PREFIX/bin/sphinx-build -b html ./ html/ && cd .. ; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then pip install doctr && doctr deploy . --built-docs docs/html/; fi
 
 notifications:
   - email: false

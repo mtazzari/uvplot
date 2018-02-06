@@ -1,23 +1,14 @@
-======
-uvplot
-======
+.. uvplot documentation master file, created by
+   sphinx-quickstart on Wed May 24 13:32:58 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+
+=========
+|uvplot|
+=========
 A simple package to make nice plots of deprojected interferometric visibilities, often called **uvplots**.
 It can be installed inside the `NRAO CASA package <https://casa.nrao.edu/>`_ (see instructions below) and has functionalities to export visibilities from the MS Table format to ASCII.
-
-
-.. image:: https://travis-ci.org/mtazzari/uvplot.svg?branch=master
-    :target: https://travis-ci.org/mtazzari/uvplot
-
-.. image:: https://img.shields.io/github/release/mtazzari/uvplot/all.svg
-    :target: https://github.com/mtazzari/uvplot/releases
-    
-.. image:: https://img.shields.io/badge/License-LGPL%20v3-blue.svg
-    :target: https://www.gnu.org/licenses/lgpl-3.0
-
-.. image:: https://zenodo.org/badge/105298533.svg
-   :target: https://zenodo.org/badge/latestdoi/105298533
-   
-|
 
 The current version implements the basic plotting functionality.
 
@@ -77,7 +68,7 @@ Example
 -------
 This is an example plot:
 
-.. image:: static/uvplot.png
+.. image:: images/uvplot.png
    :width: 60 %
    :alt: example uv plot
    :align: center
@@ -110,4 +101,17 @@ created with:
     uv_mod.plot(label='Model', uvbin_size=uvbin_size, axes=axes, yerr=False, linestyle='-', color='r')
 
     axes[0].figure.savefig("uvplot.png")
+
+
+© Copyright 2018 Marco Tazzari.
+
+..    Contents
+    --------
+    .. toctree::
+        :maxdepth: 2
+    index
+    Indices
+    -------
+    * :ref:`genindex`
+    * :ref:`search`
 
