@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>uvplot &#8212; uvplot 0.2.2 documentation</title>
+    <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <link rel="shortcut icon" type="image/png" href="_static/favicon.png" />
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    
+    
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
+        <li><a href="#">uvplot 0.2.2 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    
+        <div class="badge">
+            <a href="https://github.com/mtazzari/uvplot/">Fork me on GitHub</a>
+            <img src="_static/right-red@2x.png">
+        </div>
+    
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="uvplot">
+<h1><strong>uvplot</strong><a class="headerlink" href="#uvplot" title="Permalink to this headline">¶</a></h1>
+<p>A simple package to make nice plots of deprojected interferometric visibilities, often called <strong>uvplots</strong>.
+It can be installed inside the <a class="reference external" href="https://casa.nrao.edu/">NRAO CASA package</a> (see instructions below) and has functionalities to export visibilities from the MS Table format to ASCII.</p>
+<p>The current version implements the basic plotting functionality.</p>
+<dl class="docutils">
+<dt>Features on the road map:</dt>
+<dd><ul class="first last simple">
+<li>better handling of multiple spectral windows during visibilities export;</li>
+<li>new functionality to import visibilities from ASCII to MS Table.</li>
+</ul>
+</dd>
+</dl>
+<p>If you are interested, have feature requests, or encounter issues, consider creating an <a class="reference external" href="https://github.com/mtazzari/uvplot/issues">Issue</a> or writing me an <a class="reference external" href="mailto:marco&#46;tazzari&#37;&#52;&#48;gmail&#46;com">email</a>. I am happy to have your feedback!</p>
+<div class="section" id="attribution">
+<h2>Attribution<a class="headerlink" href="#attribution" title="Permalink to this headline">¶</a></h2>
+<p>If you use <strong>uvplot</strong> for your publication, please cite the <a class="reference external" href="https://zenodo.org/badge/latestdoi/105298533">Zenodo reference</a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@misc</span><span class="p">{</span><span class="n">uvplot_mtazzari</span><span class="p">,</span>
+  <span class="n">author</span>       <span class="o">=</span> <span class="p">{</span><span class="n">Marco</span> <span class="n">Tazzari</span><span class="p">},</span>
+  <span class="n">title</span>        <span class="o">=</span> <span class="p">{</span><span class="n">mtazzari</span><span class="o">/</span><span class="n">uvplot</span><span class="p">:</span> <span class="n">v0</span><span class="o">.</span><span class="mf">1.1</span><span class="p">},</span>
+  <span class="n">month</span>        <span class="o">=</span> <span class="nb">oct</span><span class="p">,</span>
+  <span class="n">year</span>         <span class="o">=</span> <span class="mi">2017</span><span class="p">,</span>
+  <span class="n">doi</span>          <span class="o">=</span> <span class="p">{</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="o">.</span><span class="mi">1003113</span><span class="p">},</span>
+  <span class="n">url</span>          <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="o">.</span><span class="mi">1003113</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p><strong>uvplot</strong> is free software licensed under the LGPLv3 License. For more details see the LICENSE.
+© Copyright 2018 Marco Tazzari.</p>
+</div>
+<div class="section" id="changelog">
+<h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>v0.2.2</strong>: a new export visibilities option in UVTable.plot(), automatically mask empty uv-bins, bugfixes.</li>
+<li><strong>v0.2.0</strong>: a new <code class="code docutils literal"><span class="pre">export_uvtable</span></code> function to export visibilities from an MS to an ASCII table.</li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><strong>uvplot</strong> works on <code class="code docutils literal"><span class="pre">Python</span></code> &gt;=2.7 and &gt;=3.6 and can be installed with:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>pip install uvplot
+</pre></div>
+</div>
+<p>To make <strong>uvplot</strong> available in CASA, run from the shell:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>casa-pip install uvplot
+</pre></div>
+</div>
+<p>where <code class="code docutils literal"><span class="pre">casa-pip</span></code> is a tool that can be downloaded <a class="reference external" href="https://github.com/radio-astro-tools/casa-python">here</a> .</p>
+<p><strong>uvplot</strong> has been tested on CASA versions &gt;= 4.7.0.</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>This is an example plot:</p>
+<a class="reference internal image-reference" href="_images/uvplot.png"><img alt="example uv plot" class="align-center" src="_images/uvplot.png" style="width: 60%;" /></a>
+<p>created with:</p>
+<div class="highlight-py"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">uvplot</span> <span class="kn">import</span> <span class="n">UVTable</span><span class="p">,</span> <span class="n">arcsec</span>
+
+<span class="n">wle</span> <span class="o">=</span> <span class="mf">0.88e-3</span>         <span class="c1"># Observing wavelength         [m]</span>
+
+<span class="n">dRA</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">arcsec</span>    <span class="c1"># Delta Right Ascension offset [rad]</span>
+<span class="n">dDec</span> <span class="o">=</span> <span class="mf">0.07</span> <span class="o">*</span> <span class="n">arcsec</span>  <span class="c1"># Delta Declination     offset [rad]</span>
+<span class="n">inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">73.</span><span class="p">)</span> <span class="c1"># Inclination    [rad]</span>
+<span class="n">PA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">59</span><span class="p">)</span>   <span class="c1"># Position Angle [rad]</span>
+
+<span class="n">uvbin_size</span> <span class="o">=</span> <span class="mf">30e3</span>     <span class="c1"># uv-distance bin [wle]</span>
+
+<span class="n">uv</span> <span class="o">=</span> <span class="n">UVTable</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;uvtable.txt&#39;</span><span class="p">,</span> <span class="n">wle</span><span class="o">=</span><span class="n">wle</span><span class="p">)</span>
+<span class="n">uv</span><span class="o">.</span><span class="n">apply_phase</span><span class="p">(</span><span class="n">dRA</span><span class="p">,</span> <span class="n">dDec</span><span class="p">)</span>
+<span class="n">uv</span><span class="o">.</span><span class="n">deproject</span><span class="p">(</span><span class="n">inc</span><span class="p">,</span> <span class="n">PA</span><span class="p">)</span>
+
+<span class="n">uv_mod</span> <span class="o">=</span> <span class="n">UVTable</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;uvtable_mod.txt&#39;</span><span class="p">,</span> <span class="n">wle</span><span class="o">=</span><span class="n">wle</span><span class="p">)</span>
+<span class="n">uv_mod</span><span class="o">.</span><span class="n">apply_phase</span><span class="p">(</span><span class="n">dRA</span><span class="o">=</span><span class="n">dRA</span><span class="p">,</span> <span class="n">dDec</span><span class="o">=</span><span class="n">dDec</span><span class="p">)</span>
+<span class="n">uv_mod</span><span class="o">.</span><span class="n">deproject</span><span class="p">(</span><span class="n">inc</span><span class="o">=</span><span class="n">inc</span><span class="p">,</span> <span class="n">PA</span><span class="o">=</span><span class="n">PA</span><span class="p">)</span>
+
+<span class="n">axes</span> <span class="o">=</span> <span class="n">uv</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data&#39;</span><span class="p">,</span> <span class="n">uvbin_size</span><span class="o">=</span><span class="n">uvbin_size</span><span class="p">)</span>
+<span class="n">uv_mod</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span> <span class="n">uvbin_size</span><span class="o">=</span><span class="n">uvbin_size</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;uvplot.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>© Copyright 2018 Marco Tazzari.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+    <a id="sidebar-anchor"></a>
+    
+
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><strong>uvplot</strong></a><ul>
+<li><a class="reference internal" href="#attribution">Attribution</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#changelog">Changelog</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+      </ul>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Marco Tazzari.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>
