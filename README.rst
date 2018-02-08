@@ -75,13 +75,25 @@ To make **uvplot** available in CASA, run from the shell:
 
 where `casa-pip` is a tool that can be downloaded `here <https://github.com/radio-astro-tools/casa-python>`_ .
 
+To upgrade **uvplot** to a newer version on your system, just run:
+
+.. code-block :: bash
+
+    pip install --upgrade uvplot
+    
+To upgrade **uvplot** inside CASA use the `--no-deps` option to prevent `casa-pip` from automatically upgrading `numpy` and `matplotlib` (which is not allowed inside CASA and will lead to errors):
+
+.. code-block :: bash
+
+    casa-pip install --upgrade --no-deps uvplot
+    
 **uvplot** has been tested on CASA versions >= 4.7.0.
 
 Example
 -------
 This is an example plot:
 
-.. image:: static/uvplot.png
+.. image:: docs/images/uvplot.png
    :width: 60 %
    :alt: example uv plot
    :align: center
