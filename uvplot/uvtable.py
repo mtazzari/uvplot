@@ -287,7 +287,7 @@ class UVTable(object):
             return UVTable((u_deproj, v_deproj, self.re, self.im, self.weights))
 
     def plot(self, fig_filename=None, color='k', linestyle='.', label='',
-             fontsize=18, yerr=True, caption=None, axes=None,
+             fontsize=18, linewidth=2.5, alpha=1., yerr=True, caption=None, axes=None,
              uvbin_size=0, vis_filename=None, verbose=True):
         """
         Produce a uv plot.
@@ -304,6 +304,10 @@ class UVTable(object):
             Legend label.
         fontsize : int, optional
             Font size to be used in the text of the plot.
+        linewidth : float, optional
+            Line width of the errobar.
+        alpha : float, optional
+            Transparency of the errorbar.
         yerr : bool, optional
             If True, the y errors are shown. Default is True.
         caption : dict, optional
@@ -351,14 +355,14 @@ class UVTable(object):
         ax_Re.errorbar(uvbins[mask], self.bin_re[mask],
                        yerr=self.bin_re_err[mask] if yerr is True else None,
                        fmt=linestyle,
-                       color=color, linewidth=2.5, capsize=2.5,
-                       markersize=13, elinewidth=0., label=label)
+                       color=color, linewidth=linewidth, capsize=2.5,
+                       markersize=13, elinewidth=0., label=label, alpha=alpha)
 
         ax_Im.errorbar(uvbins[mask], self.bin_im[mask],
                        yerr=self.bin_im_err[mask] if yerr is True else None,
                        fmt=linestyle,
-                       color=color, linewidth=2.5, capsize=2.5,
-                       markersize=13, elinewidth=0., label=label)
+                       color=color, linewidth=linewidth, capsize=2.5,
+                       markersize=13, elinewidth=0., label=label, alpha=alpha)
 
         ax_Im.set_xlabel(r'uv-distance (k$\lambda$)', fontweight='bold',
                          fontsize=fontsize)
@@ -367,7 +371,7 @@ class UVTable(object):
         ax_Re.yaxis.set_label_coords(-0.25, 0.5)
         ax_Im.yaxis.set_label_coords(-0.25, 0.5)
 
-        ax_Re.set_xticklabels("")
+        ax_Re.tick_params(labelbottom=False)
 
         if vis_filename:
             np.savetxt(vis_filename,
