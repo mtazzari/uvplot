@@ -71,7 +71,7 @@ def test_uvcut():
     uvt = uv.uvcut(maxuv)
 
     # manual uvcut
-    uvcut = uv.uvcut <= maxuv
+    uvcut = uv.uvdist <= maxuv
 
     assert_allclose(uvt.u, uv.u[uvcut])
     assert_allclose(uvt.v, uv.v[uvcut])
