@@ -17,14 +17,17 @@ class UVTable(object):
     UV table.
 
     """
-    def __init__(self, uvtable=None, filename="", wle=1, **kwargs):
+    def __init__(self, uvtable=None, filename=None, wle=1, **kwargs):
         """
-        Init the UVTable object by importing the visibilities from file.
+        Create a UVTable object by importing the visibilities from ASCII file or from a uvtable.
+        Provide either a `uvtable` or a `filename`, but not both of them.
 
         Parameters
         ----------
+        uvtable : array-like, float
+            A list of 1d arrays (or a 2d array) with `u, v, Re, Im, wegiths` columns.
         filename : str
-            Name of the file containing the uv table.
+            Name of the ASCII file containing the uv table.
         wle : float, optional
             Observing wavelength. Default is 1, i.e. the `(u,v)` coordinates are
             assumed to be expressed in units of wavelength.
@@ -35,20 +38,19 @@ class UVTable(object):
         The (u, v) coordinates are stored in units of the observing wavelength `wle`.
 
         """
-        if filename != "":
+        if filename:
+            if uvtable:
+                raise ValueError("Cannot provide both `filename` and `uvtable`")
             self.filename = filename
 
-            uvdata = self.read_uvtable(self.filename, kwargs.get('format', 'ascii'))
+            uvtable = self.read_uvtable(self.filename, 'ascii')
+        else:
+            if uvtable is None:
+                raise ValueError("Provide at least a filename or a uvtable.")
 
-            u = uvdata[:, 0]
-            v = uvdata[:, 1]
-            re = uvdata[:, 2]
-            im = uvdata[:, 3]
-            weights = uvdata[:, 4]
-
-        if uvtable is not None:
-            u, v, re, im, weights = uvtable
-
+        # enforce arrays to be C-contiguous
+        u, v, re, im, weights = np.require(uvtable, requirements='C')
+        self.wle = wle
         self._u = u/wle
         self._v = v/wle
         self._re = re
@@ -63,7 +65,7 @@ class UVTable(object):
     def read_uvtable(filename, format):
         """ Read uvtable from file, given a specific format. """
         if format == 'ascii':
-            uvdata = np.loadtxt(filename)
+            uvdata = np.loadtxt(filename, unpack=True)
 
         else:
             raise NotImplementedError
@@ -85,7 +87,7 @@ class UVTable(object):
     @v.setter
     def v(self, value):
         self._v = np.ascontiguousarray(value)
-        
+
     @property
     def re(self):
         return self._re
@@ -93,7 +95,7 @@ class UVTable(object):
     @re.setter
     def re(self, value):
         self._re = np.ascontiguousarray(value)
-        
+
     @property
     def im(self):
         return self._im
@@ -101,7 +103,7 @@ class UVTable(object):
     @im.setter
     def im(self, value):
         self._im = np.ascontiguousarray(value)
-        
+
     @property
     def weights(self):
         return self._weights
@@ -387,7 +389,7 @@ class UVTable(object):
         # ax[1].set_xlim(uvlim)
         # ax[0].set_ylim(Jylims[0])
         # ax[1].set_ylim(Jylims[1])
-        # ax[1].set_yticks(Jyticks_im)
+        # ax_Re.set_xticklabels(["")
         # ax[1].set_yticklabels(Jyticks_im)
 
         if label:
