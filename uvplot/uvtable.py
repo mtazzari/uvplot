@@ -288,6 +288,31 @@ class UVTable(object):
         else:
             return UVTable((u_deproj, v_deproj, self.re, self.im, self.weights))
 
+    def uvcut(self, maxuv, verbose=False):
+        """
+       Apply uv cut to a table. Consider only baselines shorter than maxuv.
+
+       Parameters
+       ----------
+       maxuv : float
+           Maximum baseline to be considered.
+           **units**: observing wavelength.
+       verbose : bool, optional
+           If true, print an informative message.
+
+       Returns:
+       u, v, w, re, im, w : ndarrays
+           Visibilities.
+
+       """
+        uvcut = self.uvdist <= maxuv
+
+        if verbose:
+            print("Consider only baselines up to {} klambda ({} out of {} uv-points)".format(
+                    maxuv / 1e3, np.count_nonzero(uvcut), self.ndat))
+
+        return UVTable([a[uvcut] for a in [self.u, self.v, self.re, self.im, self.weights]])
+
     def plot(self, fig_filename=None, color='k', linestyle='.', label='',
              fontsize=18, linewidth=2.5, alpha=1., yerr=True, caption=None, axes=None,
              uvbin_size=0, vis_filename=None, verbose=True):
