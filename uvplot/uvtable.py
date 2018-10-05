@@ -8,7 +8,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 
-
 __all__ = ["UVTable"]
 
 
@@ -17,6 +16,7 @@ class UVTable(object):
     UV table.
 
     """
+
     def __init__(self, uvtable=None, filename=None, wle=1, **kwargs):
         """
         Create a UVTable object by importing the visibilities from ASCII file or from a uvtable.
@@ -51,8 +51,8 @@ class UVTable(object):
         # enforce arrays to be C-contiguous
         u, v, re, im, weights = np.require(uvtable, requirements='C')
         self.wle = wle
-        self._u = u/wle
-        self._v = v/wle
+        self._u = u / wle
+        self._v = v / wle
         self._re = re
         self._im = im
         self._weights = weights
@@ -65,12 +65,20 @@ class UVTable(object):
     def read_uvtable(filename, format):
         """ Read uvtable from file, given a specific format. """
         if format == 'ascii':
-            uvdata = np.loadtxt(filename, unpack=True)
+            uvtable = np.loadtxt(filename, unpack=True)
+        elif format == 'npz':
+            loaded = np.load(filename)
 
+            if 'header' in loaded.files:
+                header = loaded['header'].item()
+                wle = header['wle']
+
+            uvtable = [loaded['u'], loaded['v'],
+                       loaded['V'].real, loaded['V'].imag, loaded['weights']]
         else:
             raise NotImplementedError
 
-        return uvdata
+        return uvtable
 
     @property
     def u(self):
@@ -133,24 +141,24 @@ class UVTable(object):
         To compute the weights, we do not need to divide by the weight_corr factor since it cancels out when we compute
 
         """
-        self.nbins = np.ceil(self.uvdist.max()/uvbin_size).astype('int')
+        self.nbins = np.ceil(self.uvdist.max() / uvbin_size).astype('int')
         self.bin_uvdist = np.zeros(self.nbins)
         self.bin_weights = np.zeros(self.nbins)
         self.bin_count = np.zeros(self.nbins, dtype='int')
         self.uv_intervals = []
 
-        self.uv_bin_edges = np.arange(self.nbins+1, dtype='float64')*uvbin_size
+        self.uv_bin_edges = np.arange(self.nbins + 1, dtype='float64') * uvbin_size
 
         for i in range(self.nbins):
             uv_interval = np.where((self.uvdist >= self.uv_bin_edges[i]) &
-                                   (self.uvdist < self.uv_bin_edges[i+1]))
+                                   (self.uvdist < self.uv_bin_edges[i + 1]))
             self.bin_count[i] = len(uv_interval[0])
 
             if self.bin_count[i] != 0:
-                self.bin_uvdist[i] = self.uvdist[uv_interval].sum()/self.bin_count[i]
+                self.bin_uvdist[i] = self.uvdist[uv_interval].sum() / self.bin_count[i]
                 self.bin_weights[i] = np.sum(self.weights[uv_interval])
             else:
-                self.bin_uvdist[i] = self.uv_bin_edges[i]+0.5*uvbin_size
+                self.bin_uvdist[i] = self.uv_bin_edges[i] + 0.5 * uvbin_size
 
             self.uv_intervals.append(uv_interval)
 
@@ -180,12 +188,13 @@ class UVTable(object):
         for i in range(self.nbins):
 
             if self.bin_count[i] != 0:
-                bin_x[i] = np.sum(x[self.uv_intervals[i]]*self.weights[self.uv_intervals[i]])/self.bin_weights[i]
+                bin_x[i] = np.sum(x[self.uv_intervals[i]] * self.weights[self.uv_intervals[i]]) / \
+                           self.bin_weights[i]
 
                 if use_std is True:
                     bin_x_err[i] = np.std(x[self.uv_intervals[i]])
                 else:
-                    bin_x_err[i] = 1./np.sqrt(self.bin_weights[i])
+                    bin_x_err[i] = 1. / np.sqrt(self.bin_weights[i])
 
         return bin_x, bin_x_err
 
@@ -211,7 +220,7 @@ class UVTable(object):
         dDec *= 2. * np.pi
 
         phi = self.u * dRA + self.v * dDec
-        vis = (self._re + 1j*self._im) * (np.cos(phi) + 1j*np.sin(phi))
+        vis = (self._re + 1j * self._im) * (np.cos(phi) + 1j * np.sin(phi))
 
         self._re = vis.real
         self._im = vis.imag
@@ -243,8 +252,8 @@ class UVTable(object):
         cos_t = np.cos(theta)
         sin_t = np.sin(theta)
 
-        x_r = x*cos_t - y*sin_t
-        y_r = x*sin_t + y*cos_t
+        x_r = x * cos_t - y * sin_t
+        y_r = x * sin_t + y * cos_t
 
         return x_r, y_r
 
@@ -309,7 +318,7 @@ class UVTable(object):
 
         if verbose:
             print("Consider only baselines up to {} klambda ({} out of {} uv-points)".format(
-                    maxuv / 1e3, np.count_nonzero(uvcut), self.ndat))
+                maxuv / 1e3, np.count_nonzero(uvcut), self.ndat))
 
         return UVTable([a[uvcut] for a in [self.u, self.v, self.re, self.im, self.weights]])
 
@@ -438,4 +447,3 @@ class UVTable(object):
             plt.savefig(fig_filename)
         else:
             return axes
-
