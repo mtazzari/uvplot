@@ -59,3 +59,23 @@ def test_deproject():
     uv.deproject(inc)  # inplace=True by default
     assert_allclose(uv_30.u, uv.u)
 
+
+def test_uvcut():
+
+    uvtable_filename = "/tmp/uvtable.txt"
+    uvtable, wle = create_sample_uvtable(uvtable_filename)
+
+    uv = UVTable(filename=uvtable_filename, wle=wle)
+
+    maxuv = 5e3
+    uvt = uv.uvcut(maxuv)
+
+    # manual uvcut
+    uvcut = uv.uvdist <= maxuv
+
+    assert_allclose(uvt.u, uv.u[uvcut])
+    assert_allclose(uvt.v, uv.v[uvcut])
+    assert_allclose(uvt.re, uv.re[uvcut])
+    assert_allclose(uvt.im, uv.im[uvcut])
+    assert_allclose(uvt.weights, uv.weights[uvcut])
+
