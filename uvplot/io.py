@@ -11,7 +11,7 @@ from .constants import clight
 __all__ = ["export_uvtable"]
 
 
-def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
+def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, channel='zero',
                    dualpol=True, fmt='%10.6e', datacolumn="CORRECTED_DATA", keep_tmp_ms=False, verbose=False):
     """
     Export visibilities from an MS Table to a uvtable. Requires execution inside CASA.
@@ -137,14 +137,29 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
                 " To choose which spws to export, provide split_args with the spw parameter.".format(
                     MStb_name, nspw))
 
-    ispw = 0
+    # decide whether we export first channel, or all
+    if channel == 'zero':
+        nchan = 1
+        ich = 0
+    elif channel == 'all':
+        nchan = data.shape[1]
+        ich = slice(0, nchan)
+        u = np.tile(u,nchan)
+        v = np.tile(v,nchan)
+    else:
+        raise ValueError("channel must be 'zero' or 'all', not {}".format(channel))
 
     if dualpol:
         # dual polarisation: extract the polarised visibilities and weights
-        V_XX = data[0, ispw, :]
-        V_YY = data[1, ispw, :]
+        V_XX = data[0, ich, :]
+        V_YY = data[1, ich, :]
         weights_XX = weights_orig[0, :]
         weights_YY = weights_orig[1, :]
+        if nchan > 1:
+            V_XX = V_XX.reshape(-1)
+            V_YY = V_YY.reshape(-1)
+            weights_XX = np.tile(weights_XX, nchan)
+            weights_YY = np.tile(weights_YY, nchan)
 
         # compute weighted average of the visibilities and weights
         V = (V_XX * weights_XX + V_YY * weights_YY) / (weights_XX + weights_YY)
@@ -152,8 +167,11 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None,
 
     else:
         # single polarisation
-        V = data[0, ispw, :]
-        weigths = weights_orig
+        V = data[0, ich, :]
+        weights = weights_orig
+        if nchan > 1:
+            V = V.reshape(-1)
+            weights = np.tile(weights, nchan)
 
     spw_path = tb.getkeyword('SPECTRAL_WINDOW'.encode()).split()[-1]
     tb.close()
