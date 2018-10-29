@@ -113,6 +113,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
                     (MStb_name, split_args['vis']))
 
         split(**split_args)
+        # after splitting data is put into "DATA" column
         datacolumn = "DATA"
     else:
         if vis == "":
@@ -159,7 +160,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
         ich = slice(0, nchan)
         u = np.tile(u,nchan)
         v = np.tile(v,nchan)
-        if verbose: print("exporting {} channels per spw.".format(nchan[0]))
+        if verbose: print("exporting {} channels per spw.".format(nchan)
     else:
         raise ValueError("channel must be 'zero' or 'all', not {}".format(channel))
     
