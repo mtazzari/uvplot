@@ -19,8 +19,8 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
 
     Typicall call signature::
 
-    export_uvtable('uvtable_new.txt', tb, split=split,
-                   split_args={'vis': 'sample.ms', 'datacolumn': 'data', spw='0,1'}, verbose=True)"
+    export_uvtable('uvtable_new.txt', tb, channel='all', split=split,
+                   split_args={'vis': 'sample.ms', 'datacolumn': 'DATA', 'spw':'0,1'}, verbose=True)
 
     Parameters
     ----------
@@ -38,6 +38,9 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
         The CASA::split task must be provided in input as split.
     split : optional
         CASA split task
+    channel : str, optional
+        If 'all', all channels are exported; if 'zero' only the first channel of each spectral window (spw) is exported.
+        Number of channels in each spw must be equal.
     dualpol : bool, optional
         If the MS Table contains dual polarisation data. Default is True.
     fmt : str, optional
@@ -46,21 +49,29 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
         Data column to be extracted, e.g. "DATA", "CORRECTED_DATA", "MODEL_DATA".
     keep_tmp_ms : bool, optional
         If True, keeps the temporary outputvis created by the split command.
-    verbose: bool, optional
+    verbose : bool, optional
         If True, print informative messages.
+
 
     Note
     ----
-    By default, only the 1st spectral window (spw) is exported.
-    To export all the spws in an MS table provide split_args, e.g.::
+    By default, only the 1st channel is exported.
+    To export all the channels in an MS table set channel = 'all'.
+    
+    By default, all spws are exported.
+    To export only certain spws provide split_args, e.g.::
 
-        split_args = {'vis': 'input.ms', 'outputvis': 'input_tmp.ms', spw: '*'}
+        split_args = {'vis': 'input.ms', 'outputvis': 'input_tmp.ms', spw: '1,2'}
+    
+    Flagged data should be removed from the .ms before exporting, or provide split_args, e.g.::
+    
+        split_args = {'vis': 'input.ms', 'outputvis': 'input_tmp.ms', 'keepflags': False}
 
     Example
     -------
     From within CASA, to extract all the visibilities from an MS table::
 
-        export_uvtable('uvtable.txt', tb, vis='sample.ms')
+        export_uvtable('uvtable.txt', tb, vis='sample.ms', channel='all')
 
     where `tb` is the CASA tb object (to inspect it type `tb` in the CASA shell).
     For more information on `tb` see `<https://casa.nrao.edu/docs/CasaRef/table-Module.html>`_
@@ -68,8 +79,8 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
     From within CASA, to extract the visibilities in spectral windows 0 and 2 use
     the `split_args` parameter and the CASA `split` task::
 
-        export_uvtable('uvtable.txt', tb, split=split,
-         split_args={'vis': 'sample.ms' , 'datacolumn': 'data', 'spw':'0,2'})
+        export_uvtable('uvtable.txt', tb, channel='all', split=split,
+         split_args={'vis': 'sample.ms' , 'datacolumn': 'DATA', 'spw':'0,2'})
 
     To perform these operations without running CASA interactively::
 
@@ -102,6 +113,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
                     (MStb_name, split_args['vis']))
 
         split(**split_args)
+        datacolumn = "DATA"
     else:
         if vis == "":
             raise RuntimeError \
@@ -141,13 +153,16 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
     if channel == 'zero':
         nchan = 1
         ich = 0
+        if verbose: print("exporting 1 channel per spw.")
     elif channel == 'all':
         nchan = data.shape[1]
         ich = slice(0, nchan)
         u = np.tile(u,nchan)
         v = np.tile(v,nchan)
+        if verbose: print("exporting {} channels per spw.".format(nchan[0]))
     else:
         raise ValueError("channel must be 'zero' or 'all', not {}".format(channel))
+    
 
     if dualpol:
         # dual polarisation: extract the polarised visibilities and weights
