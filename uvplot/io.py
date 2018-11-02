@@ -11,7 +11,7 @@ from .constants import clight
 __all__ = ["export_uvtable"]
 
 
-def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, channel='zero',
+def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, channel='first',
                    dualpol=True, fmt='%10.6e', datacolumn="CORRECTED_DATA", keep_tmp_ms=False, verbose=False):
     """
     Export visibilities from an MS Table to a uvtable. Requires execution inside CASA.
@@ -39,7 +39,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
     split : optional
         CASA split task
     channel : str, optional
-        If 'all', all channels are exported; if 'zero' only the first channel of each spectral window (spw) is exported.
+        If 'all', all channels are exported; if 'first' only the first channel of each spectral window (spw) is exported.
         Number of channels in each spw must be equal. Default is 'first'.
     dualpol : bool, optional
         If the MS Table contains dual polarisation data. Default is True.
@@ -151,7 +151,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
                     MStb_name, nspw))
 
     # decide whether we export first channel, or all
-    if channel == 'zero':
+    if channel == 'first':
         nchan = 1
         ich = 0
         if verbose: print("exporting 1 channel per spw.")
@@ -162,7 +162,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
         v = np.tile(v,nchan)
         if verbose: print("Exporting {} channels per spw.".format(nchan))
     else:
-        raise ValueError("channel must be 'zero' or 'all', not {}".format(channel))
+        raise ValueError("channel must be 'first' or 'all', not {}".format(channel))
     
 
     if dualpol:
