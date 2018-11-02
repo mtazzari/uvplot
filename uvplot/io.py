@@ -55,7 +55,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
 
     Note
     ----
-    By default, only the 1st channel is exported.
+    By default, only the 1st channel is exported (channel='first').
     To export all the channels in an MS table set channel = 'all'.
     
     By default, all spws are exported.
