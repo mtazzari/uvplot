@@ -40,7 +40,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
         CASA split task
     channel : str, optional
         If 'all', all channels are exported; if 'zero' only the first channel of each spectral window (spw) is exported.
-        Number of channels in each spw must be equal.
+        Number of channels in each spw must be equal. Default is 'first'.
     dualpol : bool, optional
         If the MS Table contains dual polarisation data. Default is True.
     fmt : str, optional
