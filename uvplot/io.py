@@ -63,7 +63,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
 
         split_args = {'vis': 'input.ms', 'outputvis': 'input_tmp.ms', spw: '1,2'}
     
-    Flagged data should be removed from the .ms before exporting, or provide split_args, e.g.::
+    Flagged data can be removed from the .ms by providing `split` and the `split_args` dictionary, e.g.::
     
         split_args = {'vis': 'input.ms', 'outputvis': 'input_tmp.ms', 'keepflags': False}
 
