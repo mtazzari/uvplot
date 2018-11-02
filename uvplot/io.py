@@ -113,9 +113,9 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
                     (MStb_name, split_args['vis']))
 
         split(**split_args)
-        # after splitting, data is put into "DATA" column of the new ms
+        # after splitting, data is put into the "DATA" column of the new ms
         if datacolumn !='DATA' and verbose:
-          print("datacolumn has been corrected to 'DATA' in order to operate on the new ms")
+          print('datacolumn has been corrected to "DATA" in order to operate on the new ms')
         datacolumn = "DATA"
     else:
         if vis == "":
