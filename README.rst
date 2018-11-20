@@ -25,8 +25,9 @@ It can be installed inside the `NRAO CASA package <https://casa.nrao.edu/>`_ (se
 The current version implements the basic plotting functionality.
 
 Features on the road map:
-    - better handling of multiple spectral windows during visibilities export;
-    - new functionality to import visibilities from ASCII to MS Table.
+    - handle MS tables with spectral windows with different number of channels;
+    - choose specific channels to export;
+    - import visibilities from ASCII to MS Table.
 
 If you are interested, have feature requests, or encounter issues, consider creating an `Issue <https://github.com/mtazzari/uvplot/issues>`_ or writing me an `email  <marco.tazzari@gmail.com>`_. I am happy to have your feedback!
 
