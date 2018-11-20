@@ -65,8 +65,9 @@ To upgrade **uvplot** inside CASA use the `--no-deps` option to prevent `casa-pi
 
 Features
 --------
-1) **Plotting visibilities.**
 
+**1) Plotting visibilities**
+=========================
 This is an example plot:
 
 .. image:: docs/images/uvplot.png
@@ -103,8 +104,8 @@ created with:
 
     axes[0].figure.savefig("uvplot.png")
 
-2) **Exporting visibilities** from MS table to uvtable (ASCII).
-
+**2) Exporting visibilities** from MS table to uvtable (ASCII)
+===========================================================
 Once installed **uvplot** inside CASA (see instructions above),
 it is possible to export the visibilities in `mstable.ms` to an ASCII table by executing these lines **from a CASA shell**:
 
