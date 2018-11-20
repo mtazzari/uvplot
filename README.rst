@@ -9,7 +9,7 @@ It can be installed inside the `NRAO CASA package <https://casa.nrao.edu/>`_ (se
     :target: https://travis-ci.org/mtazzari/uvplot
 
 .. image:: https://img.shields.io/pypi/v/nine.svg   
-    :target: https://pypi.python.org/pypi/uvplot/0.2.3
+    :target: https://pypi.python.org/pypi/uvplot/0.2.4
 
 .. image:: https://img.shields.io/github/release/mtazzari/uvplot/all.svg
     :target: https://github.com/mtazzari/uvplot/releases
@@ -31,8 +31,8 @@ Features on the road map:
 If you are interested, have feature requests, or encounter issues, consider creating an `Issue <https://github.com/mtazzari/uvplot/issues>`_ or writing me an `email  <marco.tazzari@gmail.com>`_. I am happy to have your feedback!
 
 
-Attribution
------------
+License and Attribution
+-----------------------
 If you use **uvplot** for your publication, please cite the `Zenodo reference <https://zenodo.org/badge/latestdoi/105298533>`_ ::
 
     @misc{uvplot_mtazzari,
@@ -44,11 +44,18 @@ If you use **uvplot** for your publication, please cite the `Zenodo reference <h
       url          = {https://doi.org/10.5281/zenodo.1003113}
     }
 
-
-License
--------
 **uvplot** is free software licensed under the LGPLv3 License. For more details see the LICENSE.
-© Copyright 2018 Marco Tazzari.
+
+© Copyright 2018 Marco Tazzari and contributors.
+
+Contributors
+------------
+Author:
+    - `Marco Tazzari (University of Cambridge) <https://github.com/mtazzari>`_
+
+Contributions to the code base:
+    - `Patrick Cronin-Coltsmann <https://github.com/PColtsmann>`_
+    - `Grant Kennedy <https://github.com/drgmk>`_
 
 Documentation
 -------------
@@ -56,6 +63,7 @@ Check out the `documentation <https://mtazzari.github.io/uvplot/>`_.
 
 Changelog
 ---------
+-
 - **v0.2.3**: a dedicated `documentation <https://mtazzari.github.io/uvplot/>`_ website.
 - **v0.2.2**: a new export visibilities option in UVTable.plot(), automatically mask empty uv-bins, bugfixes.
 - **v0.2.0**: a new `export_uvtable` function to export visibilities from an MS to an ASCII table.
