@@ -11,7 +11,7 @@ from .constants import clight
 __all__ = ["export_uvtable"]
 
 
-def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, channel='first',
+def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, channel='all',
                    dualpol=True, fmt='%10.6e', datacolumn="CORRECTED_DATA", keep_tmp_ms=False, verbose=False):
     """
     Export visibilities from an MS Table to a uvtable. Requires execution inside CASA.
@@ -114,9 +114,10 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
 
         split(**split_args)
         # after splitting, data is put into the "DATA" column of the new ms
-        if datacolumn !='DATA' and verbose:
-            print('datacolumn has been corrected to "DATA" in order to operate on the new ms')
+        if datacolumn != 'DATA' and verbose:
+            print('datacolumn has been changed from "{}" to "DATA" in order to operate on the new ms'.format(datacolumn))
         datacolumn = "DATA"
+
     else:
         if vis == "":
             raise RuntimeError \
@@ -156,13 +157,15 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
     if channel == 'first':
         nchan = 1
         ich = 0
-        if verbose: print("exporting 1 channel per spw.")
+        if verbose:
+            print("Exporting 1 channel per spw.")
     elif channel == 'all':
         nchan = data.shape[1]
         ich = slice(0, nchan)
         u = np.tile(u,nchan)
         v = np.tile(v,nchan)
-        if verbose: print("Exporting {} channels per spw.".format(nchan))
+        if verbose:
+            print("Exporting {} channels per spw.".format(nchan))
     else:
         raise ValueError("channel must be 'first' or 'all', not {}".format(channel))
     
@@ -202,12 +205,17 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
     wle = clight / freqs.mean()  # [m]
 
     # export to file as ascii
-    if verbose: print("Exporting visibilities to {}".format(uvtable_filename))
+    if verbose:
+        print("Exporting visibilities to {}...".format(uvtable_filename), end='')
+
     np.savetxt(uvtable_filename,
                np.column_stack([u, v, V.real, V.imag, weights]),
                fmt=fmt.encode(), delimiter='\t',
                header='Extracted from {}.\nwavelength[m] = {}\nColumns:\tu[m]\tv[m]\tRe(V)[Jy]\tIm(V)[Jy]\tweight'.format(
                    MStb_name, wle))
+
+    if verbose:
+        print("done.")
 
     if split_args:
         if not keep_tmp_ms:
