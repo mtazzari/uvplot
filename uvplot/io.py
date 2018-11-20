@@ -13,7 +13,7 @@ __all__ = ["export_uvtable"]
 
 def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, channel='all',
                    dualpol=True, fmt='%10.6e', datacolumn="CORRECTED_DATA", keep_tmp_ms=False,
-                   verbose=False):
+                   verbose=True):
     """
     Export visibilities from an MS Table to a uvtable. Requires execution inside CASA.
     Currently the only uvtable format supported is ASCII.
@@ -53,7 +53,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
     keep_tmp_ms : bool, optional
         If True, keeps the temporary outputvis created by the split command.
     verbose : bool, optional
-        If True, print informative messages.
+        If True, print informative messages. Default: True
 
 
     Note
