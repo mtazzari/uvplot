@@ -40,7 +40,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
         CASA split task
     channel : str, optional
         If 'all', all channels are exported; if 'first' only the first channel of each spectral window (spw) is exported.
-        Number of channels in each spw must be equal. Default is 'first'.
+        Number of channels in each spw must be equal. Default is 'all'.
     dualpol : bool, optional
         If the MS Table contains dual polarisation data. Default is True.
     fmt : str, optional
@@ -55,11 +55,10 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
 
     Note
     ----
-    By default, only the 1st channel is exported (channel='first').
-    To export all the channels in an MS table set channel = 'all'.
-    
-    By default, all spws are exported.
-    To export only certain spws provide split_args, e.g.::
+    By default, all the spws and all the channels of the `vis` MS table are exported.
+    To export only the first channel in each spw, set channel='first'.
+
+    To export only some spws provide split_args, e.g.::
 
         split_args = {'vis': 'input.ms', 'outputvis': 'input_tmp.ms', spw: '1,2'}
     
@@ -167,7 +166,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
         if verbose:
             print("Exporting {} channels per spw.".format(nchan))
     else:
-        raise ValueError("channel must be 'first' or 'all', not {}".format(channel))
+        raise ValueError("Channel must be 'first' or 'all', not {}".format(channel))
 
     if dualpol:
         # dual polarisation: extract the polarised visibilities and weights
