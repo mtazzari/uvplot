@@ -8,8 +8,8 @@ It can be installed inside the `NRAO CASA package <https://casa.nrao.edu/>`_ (se
 .. image:: https://travis-ci.org/mtazzari/uvplot.svg?branch=master
     :target: https://travis-ci.org/mtazzari/uvplot
 
-.. image:: https://img.shields.io/pypi/v/nine.svg   
-    :target: https://pypi.python.org/pypi/uvplot/0.2.3
+.. image:: https://img.shields.io/pypi/v/uvplot.svg
+    :target: https://pypi.python.org/pypi/uvplot
 
 .. image:: https://img.shields.io/github/release/mtazzari/uvplot/all.svg
     :target: https://github.com/mtazzari/uvplot/releases
@@ -25,40 +25,11 @@ It can be installed inside the `NRAO CASA package <https://casa.nrao.edu/>`_ (se
 The current version implements the basic plotting functionality.
 
 Features on the road map:
-    - better handling of multiple spectral windows during visibilities export;
-    - new functionality to import visibilities from ASCII to MS Table.
+    - handle MS tables with spectral windows with different number of channels;
+    - choose specific channels to export;
+    - import visibilities from ASCII to MS Table.
 
 If you are interested, have feature requests, or encounter issues, consider creating an `Issue <https://github.com/mtazzari/uvplot/issues>`_ or writing me an `email  <marco.tazzari@gmail.com>`_. I am happy to have your feedback!
-
-
-Attribution
------------
-If you use **uvplot** for your publication, please cite the `Zenodo reference <https://zenodo.org/badge/latestdoi/105298533>`_ ::
-
-    @misc{uvplot_mtazzari,
-      author       = {Marco Tazzari},
-      title        = {mtazzari/uvplot: v0.1.1},
-      month        = oct,
-      year         = 2017,
-      doi          = {10.5281/zenodo.1003113},
-      url          = {https://doi.org/10.5281/zenodo.1003113}
-    }
-
-
-License
--------
-**uvplot** is free software licensed under the LGPLv3 License. For more details see the LICENSE.
-© Copyright 2018 Marco Tazzari.
-
-Documentation
--------------
-Check out the `documentation <https://mtazzari.github.io/uvplot/>`_.
-
-Changelog
----------
-- **v0.2.3**: a dedicated `documentation <https://mtazzari.github.io/uvplot/>`_ website.
-- **v0.2.2**: a new export visibilities option in UVTable.plot(), automatically mask empty uv-bins, bugfixes.
-- **v0.2.0**: a new `export_uvtable` function to export visibilities from an MS to an ASCII table.
 
 
 Installation
@@ -92,8 +63,11 @@ To upgrade **uvplot** inside CASA use the `--no-deps` option to prevent `casa-pi
     
 **uvplot** has been tested on CASA versions >= 4.7.0.
 
-Example
--------
+Features
+--------
+
+**1) Plotting visibilities**
+=========================
 This is an example plot:
 
 .. image:: docs/images/uvplot.png
@@ -130,3 +104,66 @@ created with:
 
     axes[0].figure.savefig("uvplot.png")
 
+**2) Exporting visibilities** from MS table to uvtable (ASCII)
+===========================================================
+Once installed **uvplot** inside CASA (see instructions above),
+it is possible to export the visibilities in `mstable.ms` to an ASCII table by executing these lines **from a CASA shell**:
+
+.. code-block:: py
+
+    CASA <1>: from uvplot import export_uvtable
+    CASA <2>: export_uvtable("uvtable.txt", tb, vis='mstable.ms')
+
+The resulting `uvtable.txt` will contain `u, v` coordinates (in meters), `Re(V), Im(V)` visibility measurements (in Jansky),
+and `weights`. The table will also report the average wavelength (averaged among all selected spectral windows):
+
+.. code-block:: bash
+
+    # Extracted from mstable.ms.
+    # wavelength[m] = 0.00132940778422
+    # Columns:	u[m]	v[m]	Re(V)[Jy]	Im(V)[Jy]	weight
+    -2.063619e+02	2.927104e+02	-1.453431e-02	-1.590934e-02	2.326950e+04
+    3.607948e+02	6.620900e+01	-1.680727e-02	1.124862e-02	3.624442e+04
+    5.752178e+02	-6.299933e+02	5.710317e-03	6.592049e-03	4.719500e+04
+    -9.198434e+02	-1.374651e+03	1.313417e-03	4.299262e-03	4.259890e+04
+    9.623210e+01	-4.631573e+02	7.731462e-03	-8.803369e-03	4.801395e+04
+    9.348914e+01	-5.191096e+02	3.759772e-03	4.754967e-04	4.748304e+04
+    1.108410e+03	-1.396906e+03	3.222965e-03	-5.164917e-03	4.690977e+04
+    [...]
+
+By default `export_uvtable` exports all channels in all spectral windows. However, it is also possible to specify which
+spectral windows and channels to export. More details are given in the documentation of the `export_uvtable() <https://github.com/mtazzari/uvplot/blob/master/uvplot/io.py>`_ function.
+
+License and Attribution
+-----------------------
+If you use **uvplot** for your publication, please cite the `Zenodo reference <https://zenodo.org/badge/latestdoi/105298533>`_ ::
+
+    @misc{uvplot_mtazzari,
+      author       = {Marco Tazzari},
+      title        = {mtazzari/uvplot: v0.1.1},
+      month        = oct,
+      year         = 2017,
+      doi          = {10.5281/zenodo.1003113},
+      url          = {https://doi.org/10.5281/zenodo.1003113}
+    }
+
+**uvplot** is free software licensed under the LGPLv3 License. For more details see the LICENSE.
+
+© Copyright 2018 Marco Tazzari and contributors.
+
+Contributors
+------------
+Author:
+    - `Marco Tazzari (University of Cambridge) <https://github.com/mtazzari>`_
+
+Contributions to the code base:
+    - `Patrick Cronin-Coltsmann <https://github.com/PColtsmann>`_
+    - `Grant Kennedy <https://github.com/drgmk>`_
+
+Documentation
+-------------
+Check out the `documentation <https://mtazzari.github.io/uvplot/>`_.
+
+Changelog
+---------
+See the list of changes in all releases `here <https://github.com/mtazzari/uvplot/releases>`_.
