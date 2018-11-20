@@ -63,11 +63,7 @@ Check out the `documentation <https://mtazzari.github.io/uvplot/>`_.
 
 Changelog
 ---------
--
-- **v0.2.3**: a dedicated `documentation <https://mtazzari.github.io/uvplot/>`_ website.
-- **v0.2.2**: a new export visibilities option in UVTable.plot(), automatically mask empty uv-bins, bugfixes.
-- **v0.2.0**: a new `export_uvtable` function to export visibilities from an MS to an ASCII table.
-
+See the list of changes in all releases `here <https://github.com/mtazzari/uvplot/releases>`_.
 
 Installation
 ------------
