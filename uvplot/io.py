@@ -12,7 +12,8 @@ __all__ = ["export_uvtable"]
 
 
 def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, channel='all',
-                   dualpol=True, fmt='%10.6e', datacolumn="CORRECTED_DATA", keep_tmp_ms=False, verbose=False):
+                   dualpol=True, fmt='%10.6e', datacolumn="CORRECTED_DATA", keep_tmp_ms=False,
+                   verbose=False):
     """
     Export visibilities from an MS Table to a uvtable. Requires execution inside CASA.
     Currently the only uvtable format supported is ASCII.
@@ -93,8 +94,8 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
 
     if split_args:
         if split is None:
-            raise RuntimeError \
-                ("Missing split parameter: provide the CASA split object in input. See typical call signature.")
+            raise RuntimeError("Missing split parameter: provide the CASA split object in input. "
+                               "See typical call signature.")
         if vis != "" and vis != split_args['vis']:
             # raise RuntimeError("extract_uvtable: either provide `vis` or `split_args` as input parameters, not both.")
             raise RuntimeError(
@@ -107,14 +108,16 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
         MStb_name = split_args['outputvis']
 
         if verbose:
-            print \
-                ("Applying split. Creating temporary MS table {} from original MS table {}".format
-                    (MStb_name, split_args['vis']))
+            print("Applying split. Creating temporary MS table {} from original MS table {}".format
+                  (MStb_name, split_args['vis']))
 
         split(**split_args)
+
         # after splitting, data is put into the "DATA" column of the new ms
         if datacolumn != 'DATA' and verbose:
-            print('datacolumn has been changed from "{}" to "DATA" in order to operate on the new ms'.format(datacolumn))
+            print('datacolumn has been changed from "{}" to "DATA" '
+                  'in order to operate on the new ms'.format(datacolumn))
+
         datacolumn = "DATA"
 
     else:
@@ -161,8 +164,8 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
     elif channel == 'all':
         nchan = data.shape[1]
         ich = slice(0, nchan)
-        u = np.tile(u,nchan)
-        v = np.tile(v,nchan)
+        u = np.tile(u, nchan)
+        v = np.tile(v, nchan)
         if verbose:
             print("Exporting {} channels per spw.".format(nchan))
     else:
