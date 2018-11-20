@@ -65,7 +65,9 @@ To upgrade **uvplot** inside CASA use the `--no-deps` option to prevent `casa-pi
 
 Features
 --------
-1) **Plotting visibilities:** this is an example plot:
+1) **Plotting visibilities.**
+
+This is an example plot:
 
 .. image:: docs/images/uvplot.png
    :width: 60 %
@@ -101,7 +103,9 @@ created with:
 
     axes[0].figure.savefig("uvplot.png")
 
-2) **Exporting visibilities** from MS table to uvtable (ASCII). Once installed **uvplot** inside CASA (see instructions above),
+2) **Exporting visibilities** from MS table to uvtable (ASCII).
+
+Once installed **uvplot** inside CASA (see instructions above),
 it is possible to export the visibilities in `mstable.ms` to an ASCII table by executing these lines **from a CASA shell**:
 
 .. code-block:: py
@@ -110,7 +114,7 @@ it is possible to export the visibilities in `mstable.ms` to an ASCII table by e
     CASA <2>: export_uvtable("uvtable.txt", tb, vis='mstable.ms')
 
 The resulting `uvtable.txt` will contain `u, v` coordinates (in meters), `Re(V), Im(V)` visibility measurements (in Jansky),
-`weights`:
+and `weights`. The table will also report the average wavelength (averaged among all selected spectral windows):
 
 .. code-block:: bash
 
