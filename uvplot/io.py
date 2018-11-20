@@ -41,7 +41,9 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
         CASA split task
     channel : str, optional
         If 'all', all channels are exported; if 'first' only the first channel of each spectral window (spw) is exported.
-        Number of channels in each spw must be equal. Default is 'all'.
+        Number of channels in each spw must be equal, otherwise you will get a CASA error, e.g.:
+        `RuntimeError: ArrayColumn::getColumn cannot be done for column DATA; the array shapes vary: Table array conformance error`
+        Default is 'all'.
     dualpol : bool, optional
         If the MS Table contains dual polarisation data. Default is True.
     fmt : str, optional
@@ -66,6 +68,13 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
     Flagged data can be removed from the .ms by providing `split` and the `split_args` dictionary, e.g.::
     
         split_args = {'vis': 'input.ms', 'outputvis': 'input_tmp.ms', 'keepflags': False}
+
+    If you try exporting visibilites from an MS table with spws with different number of channels,
+    you will get a CASA error (see requirement for the `channel` parameter above).
+    To avoid that, you can either use the CASA `split` task to create a new MS table with only spws
+    with same number of channels. Alternatively (or additionally) you can channel average all the spws
+    to the same number of channels.
+
 
     Example
     -------
