@@ -160,7 +160,7 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
         nchan = 1
         ich = 0
         if verbose:
-            print("Exporting 1 channel per spw.")
+            print("Exporting the first channel in each spw.")
     elif channel == 'all':
         nchan = data.shape[1]
         ich = slice(0, nchan)
