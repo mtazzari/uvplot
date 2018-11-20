@@ -8,8 +8,8 @@ It can be installed inside the `NRAO CASA package <https://casa.nrao.edu/>`_ (se
 .. image:: https://travis-ci.org/mtazzari/uvplot.svg?branch=master
     :target: https://travis-ci.org/mtazzari/uvplot
 
-.. image:: https://img.shields.io/pypi/v/nine.svg   
-    :target: https://pypi.python.org/pypi/uvplot/0.2.4
+.. image:: https://img.shields.io/pypi/v/uvplot.svg
+    :target: https://pypi.python.org/pypi/uvplot
 
 .. image:: https://img.shields.io/github/release/mtazzari/uvplot/all.svg
     :target: https://github.com/mtazzari/uvplot/releases
