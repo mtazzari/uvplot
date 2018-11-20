@@ -168,17 +168,14 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
             print("Exporting {} channels per spw.".format(nchan))
     else:
         raise ValueError("channel must be 'first' or 'all', not {}".format(channel))
-    
 
     if dualpol:
         # dual polarisation: extract the polarised visibilities and weights
-        V_XX = data[0, ich, :]
-        V_YY = data[1, ich, :]
+        V_XX = data[0, ich, :].reshape(-1)
+        V_YY = data[1, ich, :].reshape(-1)
         weights_XX = weights_orig[0, :]
         weights_YY = weights_orig[1, :]
         if nchan > 1:
-            V_XX = V_XX.reshape(-1)
-            V_YY = V_YY.reshape(-1)
             weights_XX = np.tile(weights_XX, nchan)
             weights_YY = np.tile(weights_YY, nchan)
 
@@ -188,10 +185,9 @@ def export_uvtable(uvtable_filename, tb, vis="", split_args=None, split=None, ch
 
     else:
         # single polarisation
-        V = data[0, ich, :]
+        V = data[0, ich, :].reshape(-1)
         weights = weights_orig
         if nchan > 1:
-            V = V.reshape(-1)
             weights = np.tile(weights, nchan)
 
     spw_path = tb.getkeyword('SPECTRAL_WINDOW'.encode()).split()[-1]
