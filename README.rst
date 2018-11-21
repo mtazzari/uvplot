@@ -2,7 +2,7 @@
 uvplot
 ======
 A simple package to make nice plots of deprojected interferometric visibilities, often called **uvplots**.
-It can be installed inside the `NRAO CASA package <https://casa.nrao.edu/>`_ (see instructions below) and has functionalities to export visibilities from the MS Table format to ASCII. Available on the `Python Package Index <https://pypi.python.org/pypi/uvplot/0.2.3>`_.
+It can be installed inside the `NRAO CASA package <https://casa.nrao.edu/>`_ (see instructions below) and has functionalities to export visibilities from the MS Table format to ASCII. Available on the `Python Package Index <https://pypi.python.org/pypi/uvplot>`_.
 
 
 .. image:: https://travis-ci.org/mtazzari/uvplot.svg?branch=master
