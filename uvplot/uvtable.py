@@ -8,7 +8,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 
+from .constants import clight
+
 __all__ = ["UVTable"]
+
+COLUMNS_DEFAULT = ['u', 'v', 'Re', 'Im', 'weights']
+COLUMNS_LEGACY = COLUMNS_DEFAULT
+COLUMNS_V1 = ['u', 'v', 'V', 'weights', 'freqs', 'spws']
+COLUMNS_V2 = ['u', 'v', 'Re', 'Im', 'weights', 'freqs', 'spws']
 
 
 class UVTable(object):
@@ -16,8 +23,7 @@ class UVTable(object):
     UV table.
 
     """
-
-    def __init__(self, uvtable=None, filename=None, wle=1, **kwargs):
+    def __init__(self, uvtable=None, filename=None, format='ascii', columns=None, wle=1, **kwargs):
         """
         Create a UVTable object by importing the visibilities from ASCII file or from a uvtable.
         Provide either a `uvtable` or a `filename`, but not both of them.
@@ -28,6 +34,10 @@ class UVTable(object):
             A list of 1d arrays (or a 2d array) with `u, v, Re, Im, wegiths` columns.
         filename : str
             Name of the ASCII file containing the uv table.
+        format : str
+            If a filename is provided, the format of the uvtable: 'ascii' or 'binary' for .npz files.
+        columns : list
+            Columns mapping. Choose one among COLUMNS_DEFAULT, COLUMNS_V1, and COLUMNS_V2 (see Notes).
         wle : float, optional
             Observing wavelength. Default is 1, i.e. the `(u,v)` coordinates are
             assumed to be expressed in units of wavelength.
@@ -35,50 +45,143 @@ class UVTable(object):
 
         Notes
         -----
-        The (u, v) coordinates are stored in units of the observing wavelength `wle`.
+        Inside the UVTable object the (u, v) coordinates are stored in units of `wle`.
+        
+        Columns formats:
+        COLUMNS_DEFAULT = ['u', 'v', 'Re', 'Im', 'weights']
+        COLUMNS_LEGACY = ['u', 'v', 'Re', 'Im', 'weights']
+        COLUMNS_V1 = ['u', 'v', 'V', 'weights', 'freqs', 'spws']
+        COLUMNS_V2 = ['u', 'v', 'Re', 'Im', 'weights', 'freqs', 'spws']
 
         """
-        if filename:
-            if uvtable:
-                raise ValueError("Cannot provide both `filename` and `uvtable`")
-            self.filename = filename
+        if filename and uvtable:
+            raise ValueError("Cannot provide both filename and uvtable.")
 
-            uvtable = self.read_uvtable(self.filename, 'ascii')
-        else:
-            if uvtable is None:
-                raise ValueError("Provide at least a filename or a uvtable.")
+        if not filename and not uvtable:
+            raise ValueError("Provide at least a filename or a uvtable.")
 
-        # enforce arrays to be C-contiguous
-        u, v, re, im, weights = np.require(uvtable, requirements='C')
         self.wle = wle
-        self._u = u / wle
-        self._v = v / wle
-        self._re = re
-        self._im = im
-        self._weights = weights
+        self._u = None
+        self._v = None
+        self._re = None
+        self._im = None
+        self._weights = None
+        self._freqs = None
+        self._spws = None
+        self.header = None  # used only if binary uvtable
+
+        if filename:
+            format = format.upper()
+
+            if format == 'ASCII':
+                self.read_ascii_uvtable(filename, columns=columns)
+
+            if format == 'BINARY':
+                self.read_binary_uvtable(filename, columns=columns)
+
+        if uvtable:
+            self.import_uvtable(uvtable, columns=columns)
 
         self.ndat = len(self.u)
         self._uvdist = None
         self.bin_uvdist = None
 
-    @staticmethod
-    def read_uvtable(filename, format):
-        """ Read uvtable from file, given a specific format. """
-        if format == 'ascii':
-            uvtable = np.loadtxt(filename, unpack=True)
-        elif format == 'npz':
-            loaded = np.load(filename)
+    def import_uvtable(self, uvtable, columns):
 
-            if 'header' in loaded.files:
-                header = loaded['header'].item()
-                wle = header['wle']
+        Ncols = len(uvtable)
 
-            uvtable = [loaded['u'], loaded['v'],
-                       loaded['V'].real, loaded['V'].imag, loaded['weights']]
+        assert Ncols == len(columns), f"Expect {len(columns)} columns ({columns}), but the uvtable " \
+            f"list contains {Ncols} columns."
+
+        if columns == COLUMNS_DEFAULT:
+            self.u, self.v, self.re, self.im, self.weights = uvtable
+        elif columns == COLUMNS_V1:
+            self.u, self.v, self.re, self.im, self.weights, self.freqs, self.spws = uvtable
+
+        self.u = self.u / self.wle
+        self.v = self.v / self.wle
+
+    def read_ascii_uvtable(self, filename, columns):
+        """ Read an ASCII uvtable """
+        uvtable = np.require(np.loadtxt(filename, unpack=True), requirements='C')
+
+        Ncols, Nuv_tot = uvtable.shape
+
+        if not columns:
+            try:
+                # try to detect the columns line
+                with open(filename, 'r') as f:
+                    f.readline()
+                    line = f.readline()
+                    head, cols = line.split(':\t')
+
+                    assert 'COLUMNS' in head.upper(), "Expect the second line of the ASCII file " \
+                                                      "to contain columns information in the format:\n" \
+                        f"'Columns:\\tcol1 col2 col3 col4...\\n', got {line}"
+                    columns = cols.split('\n')[0].split(' ')
+
+                assert Ncols == len(columns), f"Expect {len(columns)} columns ({columns}), " \
+                    f"but the ASCII file contains {Ncols} columns."
+
+            except AssertionError:
+                # try legacy columns format
+                print(f"Unable to find 'columns' line in ASCII file, "
+                      f"trying legacy columns format\n {COLUMNS_LEGACY}")
+                columns = COLUMNS_LEGACY
+
+                assert Ncols == len(
+                    columns), f"Columns format not recognised, please provide `columns` " \
+                    f"parameter choosing one of\n" \
+                    f" COLUMNS_DEFAULT: f{COLUMNS_DEFAULT}\n" \
+                    f" COLUMNS_V1: f{COLUMNS_V1}\n" \
+                    f" COLUMNS_V2: f{COLUMNS_V2}\n"
+
+        if columns == COLUMNS_DEFAULT:
+            self.u, self.v, self.re, self.im, self.weights = uvtable
+        elif columns == COLUMNS_V1:
+            self.u = uvtable[0]
+            self.v = uvtable[1]
+            self.re = uvtable[2].real
+            self.im = uvtable[2].imag
+            self.weights = uvtable[3]
+            self.freqs = uvtable[4]
+            self.spws = uvtable[5]
+        elif columns == COLUMNS_V2:
+            self.u = uvtable[0]
+            self.v = uvtable[1]
+            self.re = uvtable[2]
+            self.im = uvtable[3]
+            self.weights = uvtable[4]
+            self.freqs = uvtable[5]
+            self.spws = uvtable[6]
+
+        self.u = self.u / self.wle
+        self.v = self.v / self.wle
+
+    def read_binary_uvtable(self, filename, columns=None):
+        loaded = np.load(filename)
+
+        self.header = loaded['header'].item()
+
+        if columns:
+            assert columns == self.header['columns']
         else:
-            raise NotImplementedError
+            columns = self.header['columns']
 
-        return uvtable
+        if columns == COLUMNS_DEFAULT:
+            self.u = loaded['u']
+            self.v = loaded['v']
+            self.re = loaded['Re']
+            self.im = loaded['Im']
+            self.weights = loaded['weights']
+        elif columns == COLUMNS_V1:
+            self.u = loaded['u']
+            self.v = loaded['v']
+            self.re = loaded['V'].real
+            self.im = loaded['V'].imag
+            self.weights = loaded['weights']
+            self.freqs = loaded['freqs']
+            self.spws = loaded['spws']
 
     @property
     def u(self):
@@ -95,6 +198,14 @@ class UVTable(object):
     @v.setter
     def v(self, value):
         self._v = np.ascontiguousarray(value)
+
+    @property
+    def u_m(self):
+        return self.u * self.freqs / clight
+
+    @property
+    def v_m(self):
+        return self.v * self.freqs / clight
 
     @property
     def re(self):
@@ -119,6 +230,26 @@ class UVTable(object):
     @weights.setter
     def weights(self, value):
         self._weights = np.ascontiguousarray(value)
+
+    @property
+    def freqs(self):
+        return self._freqs
+
+    @freqs.setter
+    def freqs(self, value):
+        self._freqs = np.ascontiguousarray(value)
+
+    @property
+    def spws(self):
+        return self._spws
+
+    @spws.setter
+    def spws(self, value):
+        self._spws = np.ascontiguousarray(value)
+
+    @property
+    def V(self):
+        return self.re + 1j * self.im
 
     @property
     def uvdist(self):
@@ -295,7 +426,8 @@ class UVTable(object):
             self.u = u_deproj
             self.v = v_deproj
         else:
-            return UVTable((u_deproj, v_deproj, self.re, self.im, self.weights))
+            return UVTable((u_deproj, v_deproj, self.re, self.im, self.weights),
+                           columns=COLUMNS_DEFAULT)
 
     def uvcut(self, maxuv, verbose=False):
         """
@@ -320,7 +452,8 @@ class UVTable(object):
             print("Consider only baselines up to {} klambda ({} out of {} uv-points)".format(
                 maxuv / 1e3, np.count_nonzero(uvcut), self.ndat))
 
-        return UVTable([a[uvcut] for a in [self.u, self.v, self.re, self.im, self.weights]])
+        return UVTable([a[uvcut] for a in [self.u, self.v, self.re, self.im, self.weights]],
+                       columns=COLUMNS_DEFAULT)
 
     def plot(self, fig_filename=None, color='k', linestyle='.', label='',
              fontsize=18, linewidth=2.5, alpha=1., yerr=True, caption=None, axes=None,
