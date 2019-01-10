@@ -8,7 +8,7 @@ import numpy as np
 from numpy.testing import assert_allclose
 
 from uvplot import UVTable
-from .uvtable import COLUMNS_DEFAULT
+from .uvtable import COLUMNS_V0
 
 
 def create_sample_uvtable(uvtable_filename):
@@ -33,12 +33,12 @@ def test_init_uvtable():
 
     # test reading from file
     # format='uvtable'
-    uvt_file = UVTable(filename=uvtable_filename, wle=wle, columns=COLUMNS_DEFAULT)
+    uvt_file = UVTable(filename=uvtable_filename, wle=wle, columns=COLUMNS_V0)
 
     # test providing uvtable tuple
     # takes u, v in units of observing wavelength
-    uvt_uvtable1 = UVTable(uvtable=(u, v, re, im, w), wle=wle, columns=COLUMNS_DEFAULT)
-    uvt_uvtable2 = UVTable(uvtable=(u/wle, v/wle, re, im, w), columns=COLUMNS_DEFAULT)
+    uvt_uvtable1 = UVTable(uvtable=(u, v, re, im, w), wle=wle, columns=COLUMNS_V0)
+    uvt_uvtable2 = UVTable(uvtable=(u/wle, v/wle, re, im, w), columns=COLUMNS_V0)
 
     reference = np.hypot(u/wle, v/wle)
 
@@ -52,7 +52,7 @@ def test_deproject():
     uvtable_filename = "/tmp/uvtable.txt"
     uvtable, wle = create_sample_uvtable(uvtable_filename)
 
-    uv = UVTable(filename=uvtable_filename, wle=wle, columns=COLUMNS_DEFAULT)
+    uv = UVTable(filename=uvtable_filename, wle=wle, columns=COLUMNS_V0)
 
     inc = np.radians(30)
     uv_30 = uv.deproject(inc, inplace=False)
@@ -68,7 +68,7 @@ def test_uvcut():
     uvtable_filename = "/tmp/uvtable.txt"
     uvtable, wle = create_sample_uvtable(uvtable_filename)
 
-    uv = UVTable(filename=uvtable_filename, wle=wle, columns=COLUMNS_DEFAULT)
+    uv = UVTable(filename=uvtable_filename, wle=wle, columns=COLUMNS_V0)
 
     maxuv = 5e3
     uvt = uv.uvcut(maxuv)
