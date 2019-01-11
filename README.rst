@@ -45,7 +45,7 @@ If you use **uvplot** for your publication, please cite the `Zenodo reference <h
 License
 -------
 **uvplot** is free software licensed under the LGPLv3 License. For more details see the LICENSE.
-© Copyright 2018 Marco Tazzari.
+© Copyright 2018-2019 Marco Tazzari.
 
 Documentation
 -------------
@@ -53,6 +53,7 @@ Check out the `documentation <https://mtazzari.github.io/uvplot/>`_.
 
 Changelog
 ---------
+- **v0.2.4**: support for binary (.npz) uvtables; introduce COLUMNS format.
 - **v0.2.3**: a dedicated `documentation <https://mtazzari.github.io/uvplot/>`_ website.
 - **v0.2.2**: a new export visibilities option in UVTable.plot(), automatically mask empty uv-bins, bugfixes.
 - **v0.2.0**: a new `export_uvtable` function to export visibilities from an MS to an ASCII table.
@@ -86,12 +87,13 @@ This is an example plot:
    :alt: example uv plot
    :align: center
 
-created with:
+created with uvplot:
 
 .. code-block:: py
 
     import numpy as np
     from uvplot import UVTable, arcsec
+    from uvplot import COLUMNS_V0       # use uvplot >= 0.2.4
 
     wle = 0.88e-3         # Observing wavelength         [m]
 
@@ -102,11 +104,11 @@ created with:
 
     uvbin_size = 30e3     # uv-distance bin [wle]
 
-    uv = UVTable(filename='uvtable.txt', wle=wle)
+    uv = UVTable(filename='uvtable.txt', wle=wle, columns=COLUMNS_V0)
     uv.apply_phase(dRA, dDec)
     uv.deproject(inc, PA)
 
-    uv_mod = UVTable(filename='uvtable_mod.txt', wle=wle)
+    uv_mod = UVTable(filename='uvtable_mod.txt', wle=wle, COLUMNS_V0)
     uv_mod.apply_phase(dRA=dRA, dDec=dDec)
     uv_mod.deproject(inc=inc, PA=PA)
 
@@ -114,4 +116,32 @@ created with:
     uv_mod.plot(label='Model', uvbin_size=uvbin_size, axes=axes, yerr=False, linestyle='-', color='r')
 
     axes[0].figure.savefig("uvplot.png")
+
+From version v0.2.4 it is necessary to provide the `columns` parameter
+when reading an ASCII uvtable. The `columns` parameter can be specified
+either as a parameter to the `UVTable()` command, or as the **2nd** line
+in the ASCII file. The available `columns` formats are:
+
+.. code-block:: bash
+
+    FORMAT          COLUMNS                                                 COLUMNS_LINE (copy-paste as 2nd line in the ASCII file)
+    COLUMNS_V0      ['u', 'v', 'Re', 'Im', 'weights']                       '# Columns      u v Re Im weights'
+    COLUMNS_V1      ['u', 'v', 'Re', 'Im', 'weights', 'freqs', 'spws']      '# Columns      u v Re Im weights freqs spws'
+    COLUMNS_V2      ['u', 'v', 'V', 'weights', 'freqs', 'spws']             '# Columns      u v V weights freqs spws'
+
+To import an ASCII uvtable with 5 columns with uvplot < 0.2.4:
+
+.. code-block:: py
+
+    from uvplot import UVTable
+    uvt = UVTable(filename='uvtable.txt', format='ascii', columns=COLUMNS_V0)
+
+
+and with uvplot >= 0.2.4:
+
+.. code-block:: py
+
+    from uvplot import UVTable
+    from uvplot import COLUMNS_V0  # ['u', 'v', 'Re', 'Im', 'weights']
+    uvt = UVTable(filename='uvtable.txt', format='ascii', columns=COLUMNS_V0)
 
