@@ -31,7 +31,6 @@ Features on the road map:
 
 If you are interested, have feature requests, or encounter issues, consider creating an `Issue <https://github.com/mtazzari/uvplot/issues>`_ or writing me an `email  <marco.tazzari@gmail.com>`_. I am happy to have your feedback!
 
-
 Installation
 ------------
 
@@ -67,7 +66,7 @@ Features
 --------
 
 **1) Plotting visibilities**
-=========================
+============================
 This is an example plot:
 
 .. image:: docs/images/uvplot.png
@@ -75,12 +74,13 @@ This is an example plot:
    :alt: example uv plot
    :align: center
 
-created with:
+created with uvplot:
 
 .. code-block:: py
 
     import numpy as np
     from uvplot import UVTable, arcsec
+    from uvplot import COLUMNS_V0       # use uvplot >= 0.2.6
 
     wle = 0.88e-3         # Observing wavelength         [m]
 
@@ -91,11 +91,11 @@ created with:
 
     uvbin_size = 30e3     # uv-distance bin [wle]
 
-    uv = UVTable(filename='uvtable.txt', wle=wle)
+    uv = UVTable(filename='uvtable.txt', wle=wle, columns=COLUMNS_V0)
     uv.apply_phase(dRA, dDec)
     uv.deproject(inc, PA)
 
-    uv_mod = UVTable(filename='uvtable_mod.txt', wle=wle)
+    uv_mod = UVTable(filename='uvtable_mod.txt', wle=wle, COLUMNS_V0)
     uv_mod.apply_phase(dRA=dRA, dDec=dDec)
     uv_mod.deproject(inc=inc, PA=PA)
 
@@ -104,8 +104,37 @@ created with:
 
     axes[0].figure.savefig("uvplot.png")
 
+From version v0.2.6 it is necessary to provide the `columns` parameter
+when reading an ASCII uvtable. The `columns` parameter can be specified
+either as a parameter to the `UVTable()` command, or as the **2nd** line
+in the ASCII file. The available `columns` formats are:
+
+.. code-block:: bash
+
+    FORMAT          COLUMNS                                                 COLUMNS_LINE (copy-paste as 2nd line in the ASCII file)
+    COLUMNS_V0      ['u', 'v', 'Re', 'Im', 'weights']                       '# Columns      u v Re Im weights'
+    COLUMNS_V1      ['u', 'v', 'Re', 'Im', 'weights', 'freqs', 'spws']      '# Columns      u v Re Im weights freqs spws'
+    COLUMNS_V2      ['u', 'v', 'V', 'weights', 'freqs', 'spws']             '# Columns      u v V weights freqs spws'
+
+To import an ASCII uvtable with 5 columns with uvplot < 0.2.6:
+
+.. code-block:: py
+
+    from uvplot import UVTable
+    uvt = UVTable(filename='uvtable.txt', format='ascii', columns=COLUMNS_V0)
+
+
+and with uvplot >= 0.2.6:
+
+.. code-block:: py
+
+    from uvplot import UVTable
+    from uvplot import COLUMNS_V0  # ['u', 'v', 'Re', 'Im', 'weights']
+    uvt = UVTable(filename='uvtable.txt', format='ascii', columns=COLUMNS_V0)
+
+
 **2) Exporting visibilities** from MS table to uvtable (ASCII)
-===========================================================
+==============================================================
 Once installed **uvplot** inside CASA (see instructions above),
 it is possible to export the visibilities in `mstable.ms` to an ASCII table by executing these lines **from a CASA shell**:
 
