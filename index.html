@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>uvplot &#8212; uvplot 0.2.5 documentation</title>
+    <title>uvplot &#8212; uvplot 0.2.6 documentation</title>
     <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -28,7 +28,7 @@
       <h3>Navigation</h3>
       <ul>
         <li class="responsive-menu"><a href="#sidebar-anchor" title="Navigation">&#9776;</a></li>
-        <li><a href="#">uvplot 0.2.5 documentation</a> &#187;</li> 
+        <li><a href="#">uvplot 0.2.6 documentation</a> &#187;</li> 
       </ul>
     </div>
     
@@ -45,45 +45,28 @@
           <div class="body" role="main">
             
   <div class="section" id="uvplot">
-<h1><strong>uvplot</strong><a class="headerlink" href="#uvplot" title="Permalink to this headline">¶</a></h1>
+<h1>uvplot<a class="headerlink" href="#uvplot" title="Permalink to this headline">¶</a></h1>
 <p>A simple package to make nice plots of deprojected interferometric visibilities, often called <strong>uvplots</strong>.
-It can be installed inside the <a class="reference external" href="https://casa.nrao.edu/">NRAO CASA package</a> (see instructions below) and has functionalities to export visibilities from the MS Table format to ASCII.</p>
+It can be installed inside the <a class="reference external" href="https://casa.nrao.edu/">NRAO CASA package</a> (see instructions below) and has functionalities to export visibilities from the MS Table format to ASCII. Available on the <a class="reference external" href="https://pypi.python.org/pypi/uvplot">Python Package Index</a>.</p>
+<a class="reference external image-reference" href="https://travis-ci.org/mtazzari/uvplot"><img alt="https://travis-ci.org/mtazzari/uvplot.svg?branch=master" src="https://travis-ci.org/mtazzari/uvplot.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/uvplot"><img alt="https://img.shields.io/pypi/v/uvplot.svg" src="https://img.shields.io/pypi/v/uvplot.svg" /></a>
+<a class="reference external image-reference" href="https://github.com/mtazzari/uvplot/releases"><img alt="https://img.shields.io/github/release/mtazzari/uvplot/all.svg" src="https://img.shields.io/github/release/mtazzari/uvplot/all.svg" /></a>
+<a class="reference external image-reference" href="https://www.gnu.org/licenses/lgpl-3.0"><img alt="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" src="https://img.shields.io/badge/License-LGPL%20v3-blue.svg" /></a>
+<a class="reference external image-reference" href="https://zenodo.org/badge/latestdoi/105298533"><img alt="https://zenodo.org/badge/105298533.svg" src="https://zenodo.org/badge/105298533.svg" /></a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <p>The current version implements the basic plotting functionality.</p>
 <dl class="docutils">
 <dt>Features on the road map:</dt>
 <dd><ul class="first last simple">
-<li>better handling of multiple spectral windows during visibilities export;</li>
-<li>new functionality to import visibilities from ASCII to MS Table.</li>
+<li>handle MS tables with spectral windows with different number of channels;</li>
+<li>choose specific channels to export;</li>
+<li>import visibilities from ASCII to MS Table.</li>
 </ul>
 </dd>
 </dl>
 <p>If you are interested, have feature requests, or encounter issues, consider creating an <a class="reference external" href="https://github.com/mtazzari/uvplot/issues">Issue</a> or writing me an <a class="reference external" href="mailto:marco&#46;tazzari&#37;&#52;&#48;gmail&#46;com">email</a>. I am happy to have your feedback!</p>
-<div class="section" id="attribution">
-<h2>Attribution<a class="headerlink" href="#attribution" title="Permalink to this headline">¶</a></h2>
-<p>If you use <strong>uvplot</strong> for your publication, please cite the <a class="reference external" href="https://zenodo.org/badge/latestdoi/105298533">Zenodo reference</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@misc</span><span class="p">{</span><span class="n">uvplot_mtazzari</span><span class="p">,</span>
-  <span class="n">author</span>       <span class="o">=</span> <span class="p">{</span><span class="n">Marco</span> <span class="n">Tazzari</span><span class="p">},</span>
-  <span class="n">title</span>        <span class="o">=</span> <span class="p">{</span><span class="n">mtazzari</span><span class="o">/</span><span class="n">uvplot</span><span class="p">:</span> <span class="n">v0</span><span class="o">.</span><span class="mf">1.1</span><span class="p">},</span>
-  <span class="n">month</span>        <span class="o">=</span> <span class="nb">oct</span><span class="p">,</span>
-  <span class="n">year</span>         <span class="o">=</span> <span class="mi">2017</span><span class="p">,</span>
-  <span class="n">doi</span>          <span class="o">=</span> <span class="p">{</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="o">.</span><span class="mi">1003113</span><span class="p">},</span>
-  <span class="n">url</span>          <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="o">.</span><span class="mi">1003113</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="license">
-<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
-<p><strong>uvplot</strong> is free software licensed under the LGPLv3 License. For more details see the LICENSE.
-© Copyright 2018 Marco Tazzari.</p>
-</div>
-<div class="section" id="changelog">
-<h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><strong>v0.2.2</strong>: a new export visibilities option in UVTable.plot(), automatically mask empty uv-bins, bugfixes.</li>
-<li><strong>v0.2.0</strong>: a new <code class="code docutils literal notranslate"><span class="pre">export_uvtable</span></code> function to export visibilities from an MS to an ASCII table.</li>
-</ul>
-</div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p><strong>uvplot</strong> works on <code class="code docutils literal notranslate"><span class="pre">Python</span></code> &gt;=2.7 and &gt;=3.6 and can be installed with:</p>
@@ -95,15 +78,26 @@ It can be installed inside the <a class="reference external" href="https://casa.
 </pre></div>
 </div>
 <p>where <code class="code docutils literal notranslate"><span class="pre">casa-pip</span></code> is a tool that can be downloaded <a class="reference external" href="https://github.com/radio-astro-tools/casa-python">here</a> .</p>
+<p>To upgrade <strong>uvplot</strong> to a newer version on your system, just run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install --upgrade uvplot
+</pre></div>
+</div>
+<p>To upgrade <strong>uvplot</strong> inside CASA use the <code class="code docutils literal notranslate"><span class="pre">--no-deps</span></code> option to prevent <code class="code docutils literal notranslate"><span class="pre">casa-pip</span></code> from automatically upgrading <code class="code docutils literal notranslate"><span class="pre">numpy</span></code> and <code class="code docutils literal notranslate"><span class="pre">matplotlib</span></code> (which is not allowed inside CASA and will lead to errors):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>casa-pip install --upgrade --no-deps uvplot
+</pre></div>
+</div>
 <p><strong>uvplot</strong> has been tested on CASA versions &gt;= 4.7.0.</p>
 </div>
-<div class="section" id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="plotting-visibilities">
+<h3><strong>1) Plotting visibilities</strong><a class="headerlink" href="#plotting-visibilities" title="Permalink to this headline">¶</a></h3>
 <p>This is an example plot:</p>
-<a class="reference internal image-reference" href="_images/uvplot.png"><img alt="example uv plot" class="align-center" src="_images/uvplot.png" style="width: 60%;" /></a>
-<p>created with:</p>
+<a class="reference internal image-reference" href="docs/images/uvplot.png"><img alt="example uv plot" class="align-center" src="docs/images/uvplot.png" style="width: 60%;" /></a>
+<p>created with uvplot:</p>
 <div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">uvplot</span> <span class="kn">import</span> <span class="n">UVTable</span><span class="p">,</span> <span class="n">arcsec</span>
+<span class="kn">from</span> <span class="nn">uvplot</span> <span class="kn">import</span> <span class="n">COLUMNS_V0</span>       <span class="c1"># use uvplot &gt;= 0.2.6</span>
 
 <span class="n">wle</span> <span class="o">=</span> <span class="mf">0.88e-3</span>         <span class="c1"># Observing wavelength         [m]</span>
 
@@ -114,11 +108,11 @@ It can be installed inside the <a class="reference external" href="https://casa.
 
 <span class="n">uvbin_size</span> <span class="o">=</span> <span class="mf">30e3</span>     <span class="c1"># uv-distance bin [wle]</span>
 
-<span class="n">uv</span> <span class="o">=</span> <span class="n">UVTable</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;uvtable.txt&#39;</span><span class="p">,</span> <span class="n">wle</span><span class="o">=</span><span class="n">wle</span><span class="p">)</span>
+<span class="n">uv</span> <span class="o">=</span> <span class="n">UVTable</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;uvtable.txt&#39;</span><span class="p">,</span> <span class="n">wle</span><span class="o">=</span><span class="n">wle</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">COLUMNS_V0</span><span class="p">)</span>
 <span class="n">uv</span><span class="o">.</span><span class="n">apply_phase</span><span class="p">(</span><span class="n">dRA</span><span class="p">,</span> <span class="n">dDec</span><span class="p">)</span>
 <span class="n">uv</span><span class="o">.</span><span class="n">deproject</span><span class="p">(</span><span class="n">inc</span><span class="p">,</span> <span class="n">PA</span><span class="p">)</span>
 
-<span class="n">uv_mod</span> <span class="o">=</span> <span class="n">UVTable</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;uvtable_mod.txt&#39;</span><span class="p">,</span> <span class="n">wle</span><span class="o">=</span><span class="n">wle</span><span class="p">)</span>
+<span class="n">uv_mod</span> <span class="o">=</span> <span class="n">UVTable</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;uvtable_mod.txt&#39;</span><span class="p">,</span> <span class="n">wle</span><span class="o">=</span><span class="n">wle</span><span class="p">,</span> <span class="n">COLUMNS_V0</span><span class="p">)</span>
 <span class="n">uv_mod</span><span class="o">.</span><span class="n">apply_phase</span><span class="p">(</span><span class="n">dRA</span><span class="o">=</span><span class="n">dRA</span><span class="p">,</span> <span class="n">dDec</span><span class="o">=</span><span class="n">dDec</span><span class="p">)</span>
 <span class="n">uv_mod</span><span class="o">.</span><span class="n">deproject</span><span class="p">(</span><span class="n">inc</span><span class="o">=</span><span class="n">inc</span><span class="p">,</span> <span class="n">PA</span><span class="o">=</span><span class="n">PA</span><span class="p">)</span>
 
@@ -128,7 +122,94 @@ It can be installed inside the <a class="reference external" href="https://casa.
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;uvplot.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>© Copyright 2018 Marco Tazzari.</p>
+<p>From version v0.2.6 it is necessary to provide the <code class="code docutils literal notranslate"><span class="pre">columns</span></code> parameter
+when reading an ASCII uvtable. The <code class="code docutils literal notranslate"><span class="pre">columns</span></code> parameter can be specified
+either as a parameter to the <code class="code docutils literal notranslate"><span class="pre">UVTable()</span></code> command, or as the <strong>2nd</strong> line
+in the ASCII file. The available <code class="code docutils literal notranslate"><span class="pre">columns</span></code> formats are:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>FORMAT          COLUMNS                                                 COLUMNS_LINE <span class="o">(</span>copy-paste as 2nd line in the ASCII file<span class="o">)</span>
+COLUMNS_V0      <span class="o">[</span><span class="s1">&#39;u&#39;</span>, <span class="s1">&#39;v&#39;</span>, <span class="s1">&#39;Re&#39;</span>, <span class="s1">&#39;Im&#39;</span>, <span class="s1">&#39;weights&#39;</span><span class="o">]</span>                       <span class="s1">&#39;# Columns      u v Re Im weights&#39;</span>
+COLUMNS_V1      <span class="o">[</span><span class="s1">&#39;u&#39;</span>, <span class="s1">&#39;v&#39;</span>, <span class="s1">&#39;Re&#39;</span>, <span class="s1">&#39;Im&#39;</span>, <span class="s1">&#39;weights&#39;</span>, <span class="s1">&#39;freqs&#39;</span>, <span class="s1">&#39;spws&#39;</span><span class="o">]</span>      <span class="s1">&#39;# Columns      u v Re Im weights freqs spws&#39;</span>
+COLUMNS_V2      <span class="o">[</span><span class="s1">&#39;u&#39;</span>, <span class="s1">&#39;v&#39;</span>, <span class="s1">&#39;V&#39;</span>, <span class="s1">&#39;weights&#39;</span>, <span class="s1">&#39;freqs&#39;</span>, <span class="s1">&#39;spws&#39;</span><span class="o">]</span>             <span class="s1">&#39;# Columns      u v V weights freqs spws&#39;</span>
+</pre></div>
+</div>
+<p>To import an ASCII uvtable with 5 columns with uvplot &lt; 0.2.6:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uvplot</span> <span class="kn">import</span> <span class="n">UVTable</span>
+<span class="n">uvt</span> <span class="o">=</span> <span class="n">UVTable</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;uvtable.txt&#39;</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">COLUMNS_V0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and with uvplot &gt;= 0.2.6:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">uvplot</span> <span class="kn">import</span> <span class="n">UVTable</span>
+<span class="kn">from</span> <span class="nn">uvplot</span> <span class="kn">import</span> <span class="n">COLUMNS_V0</span>  <span class="c1"># [&#39;u&#39;, &#39;v&#39;, &#39;Re&#39;, &#39;Im&#39;, &#39;weights&#39;]</span>
+<span class="n">uvt</span> <span class="o">=</span> <span class="n">UVTable</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;uvtable.txt&#39;</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">COLUMNS_V0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exporting-visibilities-from-ms-table-to-uvtable-ascii">
+<h3><strong>2) Exporting visibilities</strong> from MS table to uvtable (ASCII)<a class="headerlink" href="#exporting-visibilities-from-ms-table-to-uvtable-ascii" title="Permalink to this headline">¶</a></h3>
+<p>Once installed <strong>uvplot</strong> inside CASA (see instructions above),
+it is possible to export the visibilities in <code class="code docutils literal notranslate"><span class="pre">mstable.ms</span></code> to an ASCII table by executing these lines <strong>from a CASA shell</strong>:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">CASA</span> <span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">uvplot</span> <span class="kn">import</span> <span class="n">export_uvtable</span>
+<span class="n">CASA</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">export_uvtable</span><span class="p">(</span><span class="s2">&quot;uvtable.txt&quot;</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">vis</span><span class="o">=</span><span class="s1">&#39;mstable.ms&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The resulting <code class="code docutils literal notranslate"><span class="pre">uvtable.txt</span></code> will contain <code class="code docutils literal notranslate"><span class="pre">u,</span> <span class="pre">v</span></code> coordinates (in meters), <code class="code docutils literal notranslate"><span class="pre">Re(V),</span> <span class="pre">Im(V)</span></code> visibility measurements (in Jansky),
+and <code class="code docutils literal notranslate"><span class="pre">weights</span></code>. The table will also report the average wavelength (averaged among all selected spectral windows):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extracted from mstable.ms.</span>
+<span class="c1"># wavelength[m] = 0.00132940778422</span>
+<span class="c1"># Columns:  u[m]    v[m]    Re(V)[Jy]       Im(V)[Jy]       weight</span>
+-2.063619e+02       <span class="m">2</span>.927104e+02    -1.453431e-02   -1.590934e-02   <span class="m">2</span>.326950e+04
+<span class="m">3</span>.607948e+02        <span class="m">6</span>.620900e+01    -1.680727e-02   <span class="m">1</span>.124862e-02    <span class="m">3</span>.624442e+04
+<span class="m">5</span>.752178e+02        -6.299933e+02   <span class="m">5</span>.710317e-03    <span class="m">6</span>.592049e-03    <span class="m">4</span>.719500e+04
+-9.198434e+02       -1.374651e+03   <span class="m">1</span>.313417e-03    <span class="m">4</span>.299262e-03    <span class="m">4</span>.259890e+04
+<span class="m">9</span>.623210e+01        -4.631573e+02   <span class="m">7</span>.731462e-03    -8.803369e-03   <span class="m">4</span>.801395e+04
+<span class="m">9</span>.348914e+01        -5.191096e+02   <span class="m">3</span>.759772e-03    <span class="m">4</span>.754967e-04    <span class="m">4</span>.748304e+04
+<span class="m">1</span>.108410e+03        -1.396906e+03   <span class="m">3</span>.222965e-03    -5.164917e-03   <span class="m">4</span>.690977e+04
+<span class="o">[</span>...<span class="o">]</span>
+</pre></div>
+</div>
+<p>By default <code class="code docutils literal notranslate"><span class="pre">export_uvtable</span></code> exports all channels in all spectral windows. However, it is also possible to specify which
+spectral windows and channels to export. More details are given in the documentation of the <a class="reference external" href="https://github.com/mtazzari/uvplot/blob/master/uvplot/io.py">export_uvtable()</a> function.</p>
+</div>
+</div>
+<div class="section" id="license-and-attribution">
+<h2>License and Attribution<a class="headerlink" href="#license-and-attribution" title="Permalink to this headline">¶</a></h2>
+<p>If you use <strong>uvplot</strong> for your publication, please cite the <a class="reference external" href="https://zenodo.org/badge/latestdoi/105298533">Zenodo reference</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@misc</span><span class="p">{</span><span class="n">uvplot_mtazzari</span><span class="p">,</span>
+  <span class="n">author</span>       <span class="o">=</span> <span class="p">{</span><span class="n">Marco</span> <span class="n">Tazzari</span><span class="p">},</span>
+  <span class="n">title</span>        <span class="o">=</span> <span class="p">{</span><span class="n">mtazzari</span><span class="o">/</span><span class="n">uvplot</span><span class="p">:</span> <span class="n">v0</span><span class="o">.</span><span class="mf">1.1</span><span class="p">},</span>
+  <span class="n">month</span>        <span class="o">=</span> <span class="nb">oct</span><span class="p">,</span>
+  <span class="n">year</span>         <span class="o">=</span> <span class="mi">2017</span><span class="p">,</span>
+  <span class="n">doi</span>          <span class="o">=</span> <span class="p">{</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="o">.</span><span class="mi">1003113</span><span class="p">},</span>
+  <span class="n">url</span>          <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="o">.</span><span class="mi">1003113</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>uvplot</strong> is free software licensed under the LGPLv3 License. For more details see the LICENSE.</p>
+<p>© Copyright 2018 Marco Tazzari and contributors.</p>
+</div>
+<div class="section" id="contributors">
+<h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Author:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="https://github.com/mtazzari">Marco Tazzari (University of Cambridge)</a></li>
+</ul>
+</dd>
+<dt>Contributions to the code base:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="https://github.com/PColtsmann">Patrick Cronin-Coltsmann</a></li>
+<li><a class="reference external" href="https://github.com/drgmk">Grant Kennedy</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>Check out the <a class="reference external" href="https://mtazzari.github.io/uvplot/">documentation</a>.</p>
+</div>
+<div class="section" id="changelog">
+<h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h2>
+<p>See the list of changes in all releases <a class="reference external" href="https://github.com/mtazzari/uvplot/releases">here</a>.</p>
 </div>
 </div>
 
@@ -143,12 +224,17 @@ It can be installed inside the <a class="reference external" href="https://casa.
 
   <h3><a href="#">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#"><strong>uvplot</strong></a><ul>
-<li><a class="reference internal" href="#attribution">Attribution</a></li>
-<li><a class="reference internal" href="#license">License</a></li>
-<li><a class="reference internal" href="#changelog">Changelog</a></li>
+<li><a class="reference internal" href="#">uvplot</a><ul>
 <li><a class="reference internal" href="#installation">Installation</a></li>
-<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#features">Features</a><ul>
+<li><a class="reference internal" href="#plotting-visibilities"><strong>1) Plotting visibilities</strong></a></li>
+<li><a class="reference internal" href="#exporting-visibilities-from-ms-table-to-uvtable-ascii"><strong>2) Exporting visibilities</strong> from MS table to uvtable (ASCII)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#license-and-attribution">License and Attribution</a></li>
+<li><a class="reference internal" href="#contributors">Contributors</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#changelog">Changelog</a></li>
 </ul>
 </li>
 </ul>
@@ -186,7 +272,7 @@ It can be installed inside the <a class="reference external" href="https://casa.
     </div>
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, Marco Tazzari.
+        &#169; Copyright 2019, Marco Tazzari.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
     </div>
   </body>
