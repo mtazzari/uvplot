@@ -80,7 +80,7 @@ created with uvplot:
 
     import numpy as np
     from uvplot import UVTable, arcsec
-    from uvplot import COLUMNS_V0       # use uvplot >= 0.2.4
+    from uvplot import COLUMNS_V0       # use uvplot >= 0.2.6
 
     wle = 0.88e-3         # Observing wavelength         [m]
 
@@ -104,7 +104,7 @@ created with uvplot:
 
     axes[0].figure.savefig("uvplot.png")
 
-From version v0.2.4 it is necessary to provide the `columns` parameter
+From version v0.2.6 it is necessary to provide the `columns` parameter
 when reading an ASCII uvtable. The `columns` parameter can be specified
 either as a parameter to the `UVTable()` command, or as the **2nd** line
 in the ASCII file. The available `columns` formats are:
@@ -116,7 +116,7 @@ in the ASCII file. The available `columns` formats are:
     COLUMNS_V1      ['u', 'v', 'Re', 'Im', 'weights', 'freqs', 'spws']      '# Columns      u v Re Im weights freqs spws'
     COLUMNS_V2      ['u', 'v', 'V', 'weights', 'freqs', 'spws']             '# Columns      u v V weights freqs spws'
 
-To import an ASCII uvtable with 5 columns with uvplot < 0.2.4:
+To import an ASCII uvtable with 5 columns with uvplot < 0.2.6:
 
 .. code-block:: py
 
@@ -124,7 +124,7 @@ To import an ASCII uvtable with 5 columns with uvplot < 0.2.4:
     uvt = UVTable(filename='uvtable.txt', format='ascii', columns=COLUMNS_V0)
 
 
-and with uvplot >= 0.2.4:
+and with uvplot >= 0.2.6:
 
 .. code-block:: py
 
