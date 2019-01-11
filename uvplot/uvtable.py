@@ -27,7 +27,7 @@ UNITS_FORMATS = [UNITS_V0, UNITS_V1, UNITS_V2]
 
 
 def parse_columns(columns):
-    return "# Columns\t{' '.join({})}".format(columns)
+    return "# Columns\t' '.join({})".format(columns)
 
 
 COLUMNS_FORMATS_TEXT = "FORMAT\t\tCOLUMNS\t\t\t\t\t\t\tCOLUMNS_LINE " \
