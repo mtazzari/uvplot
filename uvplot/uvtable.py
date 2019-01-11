@@ -27,15 +27,16 @@ UNITS_FORMATS = [UNITS_V0, UNITS_V1, UNITS_V2]
 
 
 def parse_columns(columns):
-    return f"# Columns\t{' '.join(columns)}"
+    return "# Columns\t{' '.join({})}".format(columns)
 
 
-COLUMNS_FORMATS_TEXT = f"FORMAT\t\tCOLUMNS\t\t\t\t\t\t\tCOLUMNS_LINE "\
-    f"(copy-paste as 2nd line in the ASCII file)\n"\
-    f"COLUMNS_V0\t{COLUMNS_V0}\t\t\t"\
-    f"'{parse_columns(COLUMNS_V0)}'\n" \
-    f"COLUMNS_V1\t{COLUMNS_V1}\t'{parse_columns(COLUMNS_V1)}'\n"\
-    f"COLUMNS_V2\t{COLUMNS_V2}\t\t'{parse_columns(COLUMNS_V2)}'\n"
+COLUMNS_FORMATS_TEXT = "FORMAT\t\tCOLUMNS\t\t\t\t\t\t\tCOLUMNS_LINE " \
+                       "(copy-paste as 2nd line in the ASCII file)\n" \
+                       "COLUMNS_V0\t{0}\t\t\t'{1}'\n" \
+                       "COLUMNS_V1\t{2}\t'{3}'\n" \
+                       "COLUMNS_V2\t{4}\t\t'{5}'\n".format(COLUMNS_V0, parse_columns(COLUMNS_V0),
+                                                           COLUMNS_V1, parse_columns(COLUMNS_V1),
+                                                           COLUMNS_V2, parse_columns(COLUMNS_V2))
 
 
 class UVTable(object):
@@ -43,6 +44,7 @@ class UVTable(object):
     UV table.
 
     """
+
     def __init__(self, uvtable=None, filename=None, format='ascii', columns=None, wle=1., **kwargs):
         """
         Create a UVTable object by importing the visibilities from ASCII file or from a uvtable.
@@ -110,8 +112,8 @@ class UVTable(object):
 
         Ncols = len(uvtable)
 
-        assert Ncols == len(columns), f"Expect {len(columns)} columns ({columns}), but the uvtable " \
-            f"list contains {Ncols} columns."
+        assert Ncols == len(columns), "Expect {} columns ({}), but the uvtable list " \
+                                      "contains {} columns.".format(len(columns), columns, Ncols)
 
         if columns == COLUMNS_V0:
             self.u = uvtable[0]
@@ -146,7 +148,7 @@ class UVTable(object):
         verbose = kwargs.get('verbose', True)
 
         if verbose:
-            print(f"Reading uvtable from {filename} ...")
+            print("Reading uvtable from {} ...".format(filename))
 
         uvtable = np.require(np.loadtxt(filename, unpack=True), requirements='C')
 
@@ -177,13 +179,14 @@ class UVTable(object):
 
                     if line2[0] != '#' or 'COLUMNS' not in line2.upper():
                         print("Unable to find 'columns' line in ASCII file")
-                        print(f"Trying to assume COLUMNS_V0: {COLUMNS_V0}")
+                        print("Trying to assume COLUMNS_V0: {}".format(COLUMNS_V0))
                         columns = COLUMNS_V0
                     else:
                         columns = cols.split('\n')[0].split(' ')
 
-                    assert Ncols == len(columns), f"Expect {len(columns)} columns ({columns}), " \
-                        f"but the ASCII file contains {Ncols} columns."
+                    assert Ncols == len(columns), "Expect {} columns ({}), but the ASCII file " \
+                                                  "contains {} columns.".format(len(columns),
+                                                                                columns, Ncols)
 
                 except AssertionError:
                     print("Expect the second line of the ASCII file to contain the columns format")
@@ -192,25 +195,25 @@ class UVTable(object):
 
             if columns not in COLUMNS_FORMATS:
                 raise AssertionError(
-                    f"Detected columns {columns} format is not among the valid formats"
-                    f"Pease provide `columns` format choosing one of\n"
-                    f" COLUMNS_V0: {COLUMNS_V0}\n"
-                    f" COLUMNS_V2: {COLUMNS_V2}\n"
-                    f" COLUMNS_V1: {COLUMNS_V1}\n")
+                    "Detected columns {} format is not among the valid formats"
+                    "Pease provide `columns` format choosing one of\n"
+                    " COLUMNS_V0: {}\n"
+                    " COLUMNS_V1: {}\n"
+                    " COLUMNS_V2: {}\n".format(columns, COLUMNS_V0, COLUMNS_V1, COLUMNS_V2))
 
-        print(f"Assuming column format: {columns}")
+        print("Assuming column format: {}".format(columns))
 
         self.import_uvtable(uvtable, columns)
 
         if verbose:
-            print(f"Reading uvtable from {filename} ...done")
+            print("Reading uvtable from {} ...done".format(filename))
 
     def read_binary_uvtable(self, filename, columns=None, **kwargs):
-        # TODO: add docs read_binary_uvtable
+        """ Read binary uvtable """
         verbose = kwargs.get('verbose', True)
 
         if verbose:
-            print(f"Reading uvtable from {filename} ...", end='')
+            print("Reading uvtable from {} ...".format(filename), end='')
 
         loaded = np.load(filename)
 
@@ -237,10 +240,10 @@ class UVTable(object):
             self.spws = loaded['spws']
 
         if verbose:
-            print(f"done")
+            print("done")
 
     def save_ascii_uvtable(self, filename, **kwargs):
-        # TODO: add docs save_ascii_uvtable
+        """ Save ascii uvtable """
         ascii_fmt = kwargs.get('ascii_fmt', '%10.6e')
 
         self.header.update(columns=COLUMNS_V1, units=UNITS_V2)
@@ -257,7 +260,7 @@ class UVTable(object):
                    header=json.dumps(self.header))
 
     def save_binary_uvtable(self, filename, **kwargs):
-        # TODO: add docs save_binary_uvtable
+        """ Save binary uvtable """
         compressed = kwargs.get('compressed', True)
 
         self.header.update(columns=COLUMNS_V2, units=UNITS_V1)
@@ -273,11 +276,11 @@ class UVTable(object):
                      header=self.header)
 
     def save(self, filename, export_fmt, **kwargs):
-        # TODO: add docs save
+        """ Save uvtable """
         verbose = kwargs.get('verbose', True)
 
         if verbose:
-            print(f"Write uvtable to file {filename} ...", end='')
+            print("Write uvtable to file {} ...".format(filename), end='')
             sys.stdout.flush()
 
         export_fmt = export_fmt.upper()
@@ -293,7 +296,7 @@ class UVTable(object):
 
     @property
     def u(self):
-        # TODO: add docs
+        """ u coordinate (units: observing wavelength) """
         return self._u
 
     @u.setter
@@ -302,7 +305,7 @@ class UVTable(object):
 
     @property
     def v(self):
-        # TODO: add docs
+        """ v coordinate (units: observing wavelength) """
         return self._v
 
     @v.setter
@@ -311,17 +314,17 @@ class UVTable(object):
 
     @property
     def u_m(self):
-        # TODO: add docs
+        """ u coordinate (units: m) """
         return self.u * self.freqs / clight
 
     @property
     def v_m(self):
-        # TODO: add docs
+        """ v coordinate (units: m) """
         return self.v * self.freqs / clight
 
     @property
     def re(self):
-        # TODO: add docs
+        """ Real part of the Visibilities (units: Jy) """
         return self._re
 
     @re.setter
@@ -330,7 +333,7 @@ class UVTable(object):
 
     @property
     def im(self):
-        # TODO: add docs
+        """ Imaginary part of the Visibilities (units: Jy) """
         return self._im
 
     @im.setter
@@ -339,7 +342,7 @@ class UVTable(object):
 
     @property
     def weights(self):
-        # TODO: add docs
+        """ Weights of the Visibilities """
         return self._weights
 
     @weights.setter
@@ -348,7 +351,7 @@ class UVTable(object):
 
     @property
     def freqs(self):
-        # TODO: add docs
+        """ Frequency of the Visibilities (units: Hz) """
         return self._freqs
 
     @freqs.setter
@@ -357,7 +360,7 @@ class UVTable(object):
 
     @property
     def spws(self):
-        # TODO: add docs
+        """ Spectral window ID of the visibilities """
         return self._spws
 
     @spws.setter
@@ -366,11 +369,12 @@ class UVTable(object):
 
     @property
     def V(self):
+        """ Complex Visibilities (units: Jy) """
         return self.re + 1j * self.im
 
     @property
     def uvdist(self):
-        # TODO: add docs
+        """ Uv-distance (units: observing wavelength) """
         self._uvdist = np.hypot(self._u, self._v)
 
         return self._uvdist
