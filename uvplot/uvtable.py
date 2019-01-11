@@ -6,10 +6,15 @@ from __future__ import (division, print_function, absolute_import,
 
 import sys
 import json
-from json.decoder import JSONDecodeError
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
+
+try:
+    from json.decoder import JSONDecodeError
+except ImportError:
+    # Python 2.7 does not have JSONDecodeError (which is a subclass of ValueError)
+    JSONDecodeError = ValueError
 
 from .constants import clight
 
