@@ -95,6 +95,7 @@ class UVTable(object):
         self._freqs = None
         self._spws = None
         self.header = None
+        self.columns = None
 
         if filename:
             format = format.upper()
@@ -113,7 +114,13 @@ class UVTable(object):
         self._uvdist = None
         self.bin_uvdist = None
 
+        if self._freqs is not None:
+            self._freqs_avg = np.mean(self._freqs)
+            self._freqs_wrt_avg = self._freqs/self._freqs_avg
+
     def import_uvtable(self, uvtable, columns):
+
+        self.columns = columns
 
         Ncols = len(uvtable)
 
@@ -228,6 +235,8 @@ class UVTable(object):
             assert columns == self.header['columns']
         else:
             columns = self.header['columns']
+
+        self.columns = columns
 
         if columns == COLUMNS_V0:
             self.u = loaded['u']
@@ -579,8 +588,18 @@ class UVTable(object):
             print("Consider only baselines up to {} klambda ({} out of {} uv-points)".format(
                 maxuv / 1e3, np.count_nonzero(uvcut), self.ndat))
 
-        return UVTable([a[uvcut] for a in [self.u, self.v, self.re, self.im, self.weights]],
-                       columns=COLUMNS_V0)
+        if self.columns == COLUMNS_V0:
+            return UVTable(uvtable=[a[uvcut] for a in [self.u, self.v, self.re, self.im,
+                                                       self.weights]],
+                           columns=COLUMNS_V0)
+        elif self.columns == COLUMNS_V1:
+            return UVTable(uvtable=[a[uvcut] for a in [self.u, self.v, self.re, self.im,
+                                                       self.weights, self.freqs, self.spws]],
+                           columns=COLUMNS_V1)
+        elif self.columns == COLUMNS_V2:
+            return UVTable(uvtable=[a[uvcut] for a in [self.u, self.v, self.V,
+                                                       self.weights, self.freqs, self.spws]],
+                           columns=COLUMNS_V2)
 
     def plot(self, fig_filename=None, color='k', linestyle='.', label='',
              fontsize=18, linewidth=2.5, alpha=1., yerr=True, caption=None, axes=None,
