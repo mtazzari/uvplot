@@ -329,12 +329,12 @@ class UVTable(object):
     @property
     def u_m(self):
         """ u coordinate (units: m) """
-        return self.u * self.freqs / clight
+        return self.u / self.freqs * clight
 
     @property
     def v_m(self):
         """ v coordinate (units: m) """
-        return self.v * self.freqs / clight
+        return self.v / self.freqs * clight
 
     @property
     def re(self):
