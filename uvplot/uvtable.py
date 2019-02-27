@@ -116,7 +116,7 @@ class UVTable(object):
 
         if self._freqs is not None:
             self._freqs_avg = np.mean(self._freqs)
-            self._freqs_wrt_avg = self._freqs/self._freqs_avg
+            self._freqs_wrt_avg = self._freqs / self._freqs_avg
 
     def import_uvtable(self, uvtable, columns):
 
@@ -570,10 +570,19 @@ class UVTable(object):
         if inplace:
             self.u = u_deproj
             self.v = v_deproj
+
         else:
-            return UVTable((u_deproj, v_deproj, self.re, self.im, self.weights,
-                            self.freqs, self.spws),
-                           columns=COLUMNS_V1)
+            if self.columns == COLUMNS_V0:
+                return UVTable(uvtable=[u_deproj, v_deproj, self.re, self.im, self.weights],
+                               columns=COLUMNS_V0)
+            elif self.columns == COLUMNS_V1:
+                return UVTable(uvtable=[u_deproj, v_deproj, self.re, self.im, self.weights,
+                                        self.freqs, self.spws],
+                               columns=COLUMNS_V1)
+            elif self.columns == COLUMNS_V2:
+                return UVTable(uvtable=[u_deproj, v_deproj, self.V, self.weights, self.freqs,
+                                        self.spws],
+                               columns=COLUMNS_V2)
 
     def uvcut(self, maxuv, verbose=False):
         """
