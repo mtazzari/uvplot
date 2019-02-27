@@ -373,6 +373,16 @@ class UVTable(object):
         self._freqs = np.ascontiguousarray(value)
 
     @property
+    def freqs_avg(self):
+        """ Average frequency of the Visibilities (units: Hz) """
+        return self._freqs_avg
+
+    @property
+    def freqs_wrt_avg(self):
+        """ Frequency of the Visibilities normalised to the average frequency. (units: pure no.) """
+        return self._freqs_wrt_avg
+
+    @property
     def spws(self):
         """ Spectral window ID of the visibilities """
         return self._spws
