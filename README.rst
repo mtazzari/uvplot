@@ -46,7 +46,7 @@ To make **uvplot** available in CASA, run from the shell:
 
     casa-pip install uvplot
 
-where `casa-pip` is a tool that can be downloaded `here <https://github.com/radio-astro-tools/casa-python>`_ .
+where `casa-pip` is a tool that can be downloaded at `https://github.com/radio-astro-tools/casa-python <https://github.com/radio-astro-tools/casa-python>`_.
 
 To upgrade **uvplot** to a newer version on your system, just run:
 
