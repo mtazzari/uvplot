@@ -69,6 +69,7 @@ def test_uvcut():
     uvtable, wle = create_sample_uvtable(uvtable_filename)
 
     uv = UVTable(filename=uvtable_filename, wle=wle, columns=COLUMNS_V0)
+    uv.header = dict(test='test_header')
 
     maxuv = 5e3
     uvt = uv.uvcut(maxuv)
@@ -82,3 +83,4 @@ def test_uvcut():
     assert_allclose(uvt.im, uv.im[uvcut])
     assert_allclose(uvt.weights, uv.weights[uvcut])
 
+    assert uv.header == uvt.header

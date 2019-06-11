@@ -574,15 +574,15 @@ class UVTable(object):
         else:
             if self.columns == COLUMNS_V0:
                 return UVTable(uvtable=[u_deproj, v_deproj, self.re, self.im, self.weights],
-                               columns=COLUMNS_V0)
+                               columns=COLUMNS_V0, header=self.header)
             elif self.columns == COLUMNS_V1:
                 return UVTable(uvtable=[u_deproj, v_deproj, self.re, self.im, self.weights,
                                         self.freqs, self.spws],
-                               columns=COLUMNS_V1)
+                               columns=COLUMNS_V1, header=self.header)
             elif self.columns == COLUMNS_V2:
                 return UVTable(uvtable=[u_deproj, v_deproj, self.V, self.weights, self.freqs,
                                         self.spws],
-                               columns=COLUMNS_V2)
+                               columns=COLUMNS_V2, header=self.header)
 
     def uvcut(self, maxuv, verbose=False):
         """
@@ -610,15 +610,15 @@ class UVTable(object):
         if self.columns == COLUMNS_V0:
             return UVTable(uvtable=[a[uvcut] for a in [self.u, self.v, self.re, self.im,
                                                        self.weights]],
-                           columns=COLUMNS_V0)
+                           columns=COLUMNS_V0, header=self.header)
         elif self.columns == COLUMNS_V1:
             return UVTable(uvtable=[a[uvcut] for a in [self.u, self.v, self.re, self.im,
                                                        self.weights, self.freqs, self.spws]],
-                           columns=COLUMNS_V1)
+                           columns=COLUMNS_V1, header=self.header)
         elif self.columns == COLUMNS_V2:
             return UVTable(uvtable=[a[uvcut] for a in [self.u, self.v, self.V,
                                                        self.weights, self.freqs, self.spws]],
-                           columns=COLUMNS_V2)
+                           columns=COLUMNS_V2, header=self.header)
 
     def plot(self, fig_filename=None, color='k', linestyle='.', label='',
              fontsize=18, linewidth=2.5, alpha=1., yerr=True, caption=None, axes=None,
