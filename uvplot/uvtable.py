@@ -185,7 +185,7 @@ class UVTable(object):
                     if len(line2.split(':\t')) < 2:
                         print("Header not found in the ASCII file, please provide the "
                               "columns parameter when creating the UVTable object.")
-                        exit(1)
+                        sys.exit(1)
 
                     head, cols = line2.split(':\t')
 
