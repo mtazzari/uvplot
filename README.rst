@@ -182,7 +182,7 @@ If you use **uvplot** for your publication, please cite the `Zenodo reference <h
 
 **uvplot** is free software licensed under the LGPLv3 License. For more details see the LICENSE.
 
-© Copyright 2018 Marco Tazzari and contributors.
+© Copyright 2018-2019 Marco Tazzari and contributors.
 
 Contributors
 ------------
