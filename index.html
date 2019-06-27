@@ -151,6 +151,7 @@ it is possible to export the visibilities in <code class="code docutils literal 
 <span class="n">CASA</span> <span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">:</span> <span class="n">export_uvtable</span><span class="p">(</span><span class="s2">&quot;uvtable.txt&quot;</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">vis</span><span class="o">=</span><span class="s1">&#39;mstable.ms&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p><strong>Note</strong>: it is strongly recommended to perform a CASA <code class="code docutils literal notranslate"><span class="pre">split</span></code> command with <code class="code docutils literal notranslate"><span class="pre">keepflags=False</span></code> before exporting the uvtable. This ensures that only valid visibilities are exported.</p>
 <p>The resulting <code class="code docutils literal notranslate"><span class="pre">uvtable.txt</span></code> will contain <code class="code docutils literal notranslate"><span class="pre">u,</span> <span class="pre">v</span></code> coordinates (in meters), <code class="code docutils literal notranslate"><span class="pre">Re(V),</span> <span class="pre">Im(V)</span></code> visibility measurements (in Jansky),
 and <code class="code docutils literal notranslate"><span class="pre">weights</span></code>. The table will also report the average wavelength (averaged among all selected spectral windows):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extracted from mstable.ms.</span>
@@ -168,6 +169,7 @@ and <code class="code docutils literal notranslate"><span class="pre">weights</s
 </div>
 <p>By default <code class="code docutils literal notranslate"><span class="pre">export_uvtable</span></code> exports all channels in all spectral windows. However, it is also possible to specify which
 spectral windows and channels to export. More details are given in the documentation of the <a class="reference external" href="https://github.com/mtazzari/uvplot/blob/master/uvplot/io.py">export_uvtable()</a> function.</p>
+<p><strong>Note</strong>: currently, <code class="code docutils literal notranslate"><span class="pre">export_uvtable</span></code> only works for MS tables where all the spectral windows have <strong>the same</strong> number of channels (which, individually, can be larger than 1).</p>
 </div>
 </div>
 <div class="section" id="license-and-attribution">
