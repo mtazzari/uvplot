@@ -143,6 +143,8 @@ it is possible to export the visibilities in `mstable.ms` to an ASCII table by e
     CASA <1>: from uvplot import export_uvtable
     CASA <2>: export_uvtable("uvtable.txt", tb, vis='mstable.ms')
 
+**Note**: it is strongly recommended to perform a CASA `split` command with `keepflags=False` before exporting the uvtable. This ensures that only valid visibilities are exported.
+
 The resulting `uvtable.txt` will contain `u, v` coordinates (in meters), `Re(V), Im(V)` visibility measurements (in Jansky),
 and `weights`. The table will also report the average wavelength (averaged among all selected spectral windows):
 
@@ -162,6 +164,8 @@ and `weights`. The table will also report the average wavelength (averaged among
 
 By default `export_uvtable` exports all channels in all spectral windows. However, it is also possible to specify which
 spectral windows and channels to export. More details are given in the documentation of the `export_uvtable() <https://github.com/mtazzari/uvplot/blob/master/uvplot/io.py>`_ function.
+
+**Note**: currently, `export_uvtable` only works for MS tables where all the spectral windows have **the same** number of channels (which, individually, can be larger than 1).
 
 License and Attribution
 -----------------------
