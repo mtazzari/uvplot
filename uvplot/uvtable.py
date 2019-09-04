@@ -227,7 +227,7 @@ class UVTable(object):
         if verbose:
             print("Reading uvtable from {} ...".format(filename), end='')
 
-        loaded = np.load(filename)
+        loaded = np.load(filename, allow_pickle=True)
 
         self.header = loaded['header'].item()
 
