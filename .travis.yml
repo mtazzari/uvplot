@@ -31,7 +31,7 @@ before_install:
   - conda info -a
 
 install:
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION matplotlib numpy pytest sphinx
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then export TRAVIS_PYTHON_VERSION=3.6.8 && conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION matplotlib numpy pytest sphinx ; fi
   - source activate test-environment
   - pip install -e .
 
