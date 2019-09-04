@@ -3,7 +3,7 @@
 from setuptools import setup
 
 # read version number
-exec(open("uvplot/_version.py").read())
+exec(open("uvplot/_version.py", "r").read())
 
 setup(
     name="uvplot",
@@ -12,7 +12,7 @@ setup(
     author="Marco Tazzari",
     author_email="mtazzari@gmail.com",
     description="Utilities for handling and plotting interferometric visibilities.",
-    long_description=open('README.rst').read(),
+    long_description=open('README.rst', "r").read(),
     install_requires=["numpy>=1.9", "matplotlib"],
     license="LGPLv3",
     url="https://github.com/mtazzari/uvplot",
