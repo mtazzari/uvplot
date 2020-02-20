@@ -121,7 +121,7 @@ To import an ASCII uvtable with 5 columns with uvplot < 0.2.6:
 .. code-block:: py
 
     from uvplot import UVTable
-    uvt = UVTable(filename='uvtable.txt', format='ascii', columns=COLUMNS_V0)
+    uvt = UVTable(filename='uvtable.txt', format='ascii')
 
 
 and with uvplot >= 0.2.6:
